@@ -1,0 +1,51 @@
+{% extends './base.html' %}
+
+{% block title %} Inicio de Sesion {% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block body %}
+<form class="form-signin w-100 m-auto" action="/login" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <img class="mb-4" src="{{ url_for('static', filename='img/flask.svg') }}" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Inicio de Sesi&oacute;n</h1>
+
+    <div class="form-floating">
+        <label for="Usuario">Usuario</label>
+        <input type="text" class="form-control" id="Usuario" name="usuario" placeholder="Usuario" minlength="6" 
+        maxlength="20"
+        required autofocus>
+    </div>
+    <br />
+    <div class="form-floating">
+        <label for="floatingPassword">Contraseña</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" minlength="6"
+        maxlength="20"
+        required>
+    </div>
+    <br />
+    <button class="w-100 btn btn-lg btn-dark" type="submit">Iniciar Sesi&oacute;n</button>
+    <br />
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <br />
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <f class="mt-5 mb-3 text-muted">@agus_damore</p>
+  </form>
+  <br />
+  <form action="/crearusuario" method="get">
+    <button class="w-100 btn btn-lg btn-dark" type="submit">Crear Nuevo Usuario</button>
+  <br />
+{% endblock %}
+
+{% block customJS %}
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}

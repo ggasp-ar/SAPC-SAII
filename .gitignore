@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.$py.class
+
+env/
+.env
+
+.vs/
+SAPC.code-workspace
+
+comandos.txt
