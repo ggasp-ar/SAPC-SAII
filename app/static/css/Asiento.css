@@ -1,0 +1,22 @@
+html,
+body{
+  height: 100%;
+  background-color: #ffffff;
+}
+.form-check-input {
+  margin-top: 12px;
+}
+div[class="container py-3"]{
+  background-color: #dadada;
+  font-size: x-large;
+  border-radius: 1rem;
+  border-style:groove;
+  border-width: 0.1rem;
+}
+th,td{
+  text-align: center;
+  vertical-align: middle;
+}
+input { 
+  text-align: left; 
+}
