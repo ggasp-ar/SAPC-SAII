@@ -24,10 +24,11 @@ def load_user(id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':        
-        usuario = ModeloUsuario.login(db, 
+        usuario_id = ModeloUsuario.login(db, 
                             usr=request.form['usuario'],
                             pwd=request.form['password'])
-        if usuario != None:
+        if usuario_id != None:
+            usuario = ModeloUsuario.obtener_por_id(db,usuario_id)
             login_user(usuario)
             flash('Bienvenido {}'.format(usuario.nombre), 'success')
             return redirect(url_for('index'))
@@ -48,10 +49,9 @@ def logout():
 def index():
     if current_user.is_authenticated:
         try:
-            debugPrint(current_user.info)
             return redirect(url_for('registrar_asiento'))
         except Exception as e:
-            debugPrint(e)
+            debugPrint(e, "Index")
             return render_template('errores/error.html')
     else:
         return redirect(url_for('login'))
@@ -59,7 +59,6 @@ def index():
 @app.route('/registrar_asiento')
 @login_required
 def registrar_asiento():
-    debugPrint(current_user.info)
     if current_user.is_authenticated:
         try:
             asientos = [["Caja",15000,0],
@@ -70,7 +69,7 @@ def registrar_asiento():
             }
             return render_template('registrar_asiento.html', data=data)
         except Exception as e:
-            debugPrint(e)
+            debugPrint(e, "Registrar Asiento")
             return render_template('errores/error.html')
     else:
         return redirect(url_for('login'))

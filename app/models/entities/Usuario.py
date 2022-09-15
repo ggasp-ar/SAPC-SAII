@@ -3,13 +3,13 @@ from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
 class Usuario(UserMixin):
-    def __init__(self, id, usuario, nombre, password, rol, email=None):
-        self.id = id
-        self.usuario = usuario
-        self.nombre = nombre
-        self.password = password
-        self.rol = rol
-        self.email = email
+    def __init__(self, id, usuario, nombre, rol, password=None, email=None):
+        self.id = id #User ID
+        self.usuario = usuario #Username
+        self.nombre = nombre #Full Name
+        self.password = password #Only used to create a new user
+        self.rol = rol #Admin, User, etc..
+        self.email = email #Not in use
 
     @classmethod
     def verificar_password(self,encriptado ,password):
