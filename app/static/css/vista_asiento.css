@@ -1,0 +1,55 @@
+html,
+body{
+  height: 100%;
+  background-color: #ffffff;
+}
+.form-check-input {
+  margin-top: 12px;
+}
+  
+table {
+    table-layout:fixed;
+    width:100%;
+}
+
+div[class="container py-3"]{
+  background-color: #dadada;
+  font-size: x-large;
+  border-radius: 1rem;
+  border-style:groove;
+  border-width: 0.1rem;
+}
+
+th,td{
+  text-align: center;
+  vertical-align: middle;
+}
+
+td{
+  font-size:large;
+  overflow: hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
+  padding: 0.8em;
+}
+td:hover{
+  overflow: visible;
+  white-space:normal;
+  text-overflow:initial;
+  word-break: break-word;
+}
+
+.st-btn{
+  /*transition: all .2s ease-in-out; */
+  transform: scale(0.9);
+  transform-origin:center;
+}
+.st-btn:hover{
+  /*transition: all .2s ease-in-out; */
+  transform: scale(1);
+  transform-origin:center;
+}
+
+input { 
+  text-align: left; 
+}

@@ -2,6 +2,14 @@ document.querySelector('button[id="addAsiento"]').addEventListener('click',funct
     alert("Todavia no implementado");
 })
 
+$("#descripcion").keydown(function(e){
+  // Enter was pressed without shift key
+  if (e.keyCode == 13 && !e.shiftKey)
+  {
+      // prevent default behavior
+      e.preventDefault();
+  }
+  });
 var dp = document.getElementById("datePicker");
 var today = new Date();
 var dd = today.getDate();

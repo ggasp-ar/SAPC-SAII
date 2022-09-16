@@ -3,12 +3,12 @@
 {% block title %}Index{% endblock %}
 
 {% block customCSS %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/asiento.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vista_asiento.css') }}">
 {% endblock %}
 
 {% block container %} 
 <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <div class="col-sm col-md col-lg col-xl">
         <div style="text-align: center;">Asiento #49382</div>
     </div>
 </div>
@@ -17,8 +17,8 @@
     <div class="row">
         <div class="col-sm col-md col-lg col-xl"> 
             <div class="col">
-                <label for="descripcion">Descripcion:</label>
-                <input type="text" class="form-control input-lg" placeholder="Descripcion del Asiento" id="descripcion" name="descripcion">
+                <label for="descripcion">Descripción:</label>
+                <textarea class="form-control input-lg" placeholder="Descripcion del Asiento" id="descripcion" name="descripcion" rows="3" style="resize: none"></textarea>
             </div>
             <div class="col-lg-4">
                 <label for="monto">Monto: </label>
@@ -57,7 +57,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th style="text-align:left">Descripcion</th>
+                            <th class="w-50" style="text-align:left">Cuenta</th>
                             <th>Debe</th>
                             <th>Haber</th>
                             <th>Editar</th>
@@ -69,23 +69,20 @@
                         {% for l in data.asientos %}
                         {% set prefix2 = "&emsp;"*2 %}
                         <tr>
+                            <td>{{ loop.index }}</td>
                             {% if l[2] == 0 %}
-                                <td>{{ loop.index }}</td>
                                 <td style="text-align:left">{{ l[0] }}</td>
                                 <td>$ {{ l[1] }}</td>
                                 <td> - </td>
-                                <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEditarLibro">Editar</button></td>
-                                <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEliminarLibro">Eliminar</button></td>
                                 {% set contador.totalDebe = contador.totalDebe +  l[1] %}
                             {% else %}
-                                <td>{{ loop.index }}</td>
-                                <td style="text-align:left"> {{prefix2|safe}} {{ l[0] }}</td>
+                                <td style="text-align:left; padding-left: 3em;">{{ l[0] }}</td>
                                 <td> - </td>
                                 <td>$ {{ l[1] }}</td>
-                                <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEditarLibro">Editar</button></td>
-                                <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEliminarLibro">Eliminar</button></td>
                                 {% set contador.totalHaber = contador.totalHaber +  l[1] %}
-                            {% endif %}
+                            {% endif %}     
+                            <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEditarLibro st-btn">Editar</button></td>
+                            <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEliminarLibro st-btn">Eliminar</button></td>
                         </tr>
                         {% endfor %}
                         <tr>
@@ -112,5 +109,5 @@
 {% endblock %}
 
 {% block customJS %}
-<script src="{{ url_for('static', filename='js/asientos.js') }}"></script>
+<script src="{{ url_for('static', filename='js/registrar_asiento.js') }}"></script>
 {% endblock %}

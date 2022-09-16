@@ -47,32 +47,27 @@ def logout():
 @app.route('/')
 @login_required
 def index():
-    if current_user.is_authenticated:
-        try:
-            return redirect(url_for('registrar_asiento'))
-        except Exception as e:
-            debugPrint(e, "Index")
-            return render_template('errores/error.html')
-    else:
+    if not(current_user.is_authenticated):
         return redirect(url_for('login'))
+    return render_template('index.html')
 
 @app.route('/registrar_asiento')
 @login_required
 def registrar_asiento():
-    if current_user.is_authenticated:
-        try:
-            asientos = [["Caja",15000,0],
-                        ["Proveedores",42000,1]]
-            data = {
-                'titulo': 'Asientos...',
-                'asientos': asientos
-            }
-            return render_template('registrar_asiento.html', data=data)
-        except Exception as e:
-            debugPrint(e, "Registrar Asiento")
-            return render_template('errores/error.html')
-    else:
+    if not(current_user.is_authenticated):
         return redirect(url_for('login'))
+
+    try:
+        asientos = [["Caja",15000,0],
+                    ["Proveedoreaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas",42000,1]]
+        data = {
+            'titulo': 'Asientos...',
+            'asientos': asientos
+        }
+        return render_template('vista_asiento.html', data=data)
+    except Exception as e:
+        debugPrint(e, "Registrar Asiento")
+        return render_template('errores/error.html')
 
 @app.route('/crearusuario', methods=['GET', 'POST'])
 def crearusuario():
