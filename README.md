@@ -10,6 +10,11 @@ MYSQL_PASSWORD \
 MYSQL_HOST \
 MYSQL_DB \
 # Preparando para ejecutar el server
+Primero hay que inicializar la Base de Datos utilizando los archivos hallados en *app\db* \
+1 - schema (Modelo de la DB) \
+2 - initialize (Carga de datos de testeo de DB)\
+user = Admin password = 123
+
 Hace falta crear el entorno virtual para correr el servidor e instalar los requisitos
 ```
 virtualenv -p python3 env 
