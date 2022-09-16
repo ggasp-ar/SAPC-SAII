@@ -8,7 +8,7 @@ SECRET_KEY  \
 MYSQL_USER  \
 MYSQL_PASSWORD \
 MYSQL_HOST \
-MYSQL_DB \
+MYSQL_DB 
 # Preparando para ejecutar el server
 Primero hay que inicializar la Base de Datos utilizando los archivos hallados en *app\db* \
 1 - schema (Modelo de la DB) \
