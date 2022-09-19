@@ -9,5 +9,3 @@ http://localhost/phpmyadmin/
 https://getbootstrap.com/docs/4.6/components/alerts/
 https://sweetalert2.github.io/
 http://www.w3big.com/es/tags/att-hn-align.html#gsc.tab=0
-
-holi
