@@ -1,0 +1,41 @@
+{% extends './body.html' %}
+
+{% block title %}Index{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap-treeview/css/bootstrap-treeview.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cuentas.css') }}">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block container %} 
+<div class="row">
+    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+        <div id="tree"></div>
+    </div>
+    <div class="col-sm-7">
+        <div style="text-align: center;">
+            <h1 id="codigo-cuenta"></h1>
+            <h1 id="nombre-cuenta">Seleccione una Cuenta</h1>
+            <div class="row" id="inforow" style="visibility: hidden;">
+                <div class="col-sm">
+                    <label for="saldo-cuenta">Saldo </label>
+                    <input placeholder="Saldo" class="form-control input-sm" type="numeric" id="saldo-cuenta" name="saldo-cuenta" disabled>
+                </div>
+                <div id="tipo-cuenta" class="col-sm"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customJS %}
+<script>
+    var arbol = JSON.parse('{{data | tojson}}')
+</script>
+<script src="{{ url_for('static', filename='lib/bootstrap-treeview/js/bootstrap-treeview.js') }}"></script>
+<script src="{{ url_for('static', filename='js/mostrarcuentas.js') }}"></script>
+{% endblock %}
+
+
+

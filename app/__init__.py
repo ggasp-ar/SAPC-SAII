@@ -4,6 +4,8 @@ from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
+from app.models.ModeloCuenta import ModeloCuenta
+
 from .models.ModeloUsuario import ModeloUsuario
 from .models.entities.Usuario import Usuario
 from .utils import debugPrint
@@ -68,6 +70,20 @@ def registrar_asiento():
     except Exception as e:
         debugPrint(e, "Registrar Asiento")
         return render_template('errores/error.html')
+
+@app.route('/cargarAsiento', methods=['POST'])
+def cargar_asiento():
+    data = request.get_json()
+    debugPrint(data,"cargarasiento")
+    return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
+
+@app.route('/cuentas')
+@login_required
+def ver_cuentas():
+    familia_cuentas=ModeloCuenta().generarArbol(db)
+    debugPrint(familia_cuentas,"ver_cuentas")
+    return render_template('cuentas/cuentas.html',data=familia_cuentas)
+
 
 @app.route('/crearusuario', methods=['GET', 'POST'])
 def crearusuario():
