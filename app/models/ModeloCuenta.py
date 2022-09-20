@@ -14,7 +14,6 @@ class ModeloCuenta():
 
     @classmethod
     def generarCuenta(self, data):
-        print(self.Tipos[data["tipo_id"]])
         acc = Cuenta(id = data["cuenta_id"], 
                     nombre = data["cuenta"], 
                     codigo = data["codigo"],
