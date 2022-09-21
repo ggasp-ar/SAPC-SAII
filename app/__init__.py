@@ -72,7 +72,7 @@ def registrar_asiento():
 @app.route('/crearusuario', methods=['GET', 'POST'])
 def crearusuario():
     if request.method == 'POST':
-        nuevoUsuario = (request.form['usuario'],request.form['password'],request.form['passwordTwo'],request.form['Celulular'])
+        nuevoUsuario = (request.form['usuario'],request.form['password'],request.form['passwordTwo'])
         usuario_creado = ModeloUsuario.crear_usuario(db, nuevoUsuario)
         if usuario_creado != None:
             flash('Usuario creado correctamente', 'success')
