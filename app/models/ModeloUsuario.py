@@ -25,8 +25,19 @@ class ModeloUsuario():
             usuario = Usuario(None, nuevoUsuario[0], nuevoUsuario[0],0,Usuario.crear_password(nuevoUsuario[1]))
             cursor = db.connection.cursor()
             print(usuario.usuario, usuario.password)
-            sql = f"""INSERT INTO usuarios (`usuario_id`, `usuario`, `nombre`, `contrasenia`, `rol_id`, `habilitada`) 
-            VALUES (NULL, '{usuario.usuario}', {usuario.usuario}, '{usuario.password}', 0, 1);"""
+            sql = f"""INSERT INTO usuarios (`usuario`,
+                                            `nombre`,
+                                            `contrasenia`,
+                                            `rol_id`,
+                                            `habilitada`) 
+                                    VALUES ('{usuario.usuario}',
+                                            '{usuario.usuario}',
+                                            '{usuario.password}',
+                                            1,
+                                            1);""" # Rol ID 1 es usuario, 0 es Admin en este caso, cuidado
+                                            # y habria que ver si no dejar el habilitado en 0, 
+                                            # y que el admin habilite las nuevas cuentas registradas
+                                            # :thonk:
             cursor.execute(sql)
             db.connection.commit()
             return True
