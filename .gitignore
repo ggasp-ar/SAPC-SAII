@@ -2,8 +2,12 @@ __pycache__/
 *.py[cod]
 *.$py.class
 
+.vscode/
+package*.json
+node_modules/
+
 env/
-.env
+.env*
 
 .vs/
 SAPC.code-workspace

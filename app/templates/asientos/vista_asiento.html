@@ -1,0 +1,65 @@
+{% extends './body.html' %}
+
+{% block title %}Index{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vista_asiento.css') }}">
+{% endblock %}
+
+{% block container %} 
+<div class="row">
+    <div class="col-sm col-md col-lg col-xl">
+        <div style="text-align: center;">{{data.titulo}}#{{data.id}}</div>
+    </div>
+</div>
+<hr/>
+<form>
+    <div class="row">
+        <div class="col-sm-6"> 
+            <label for="descripcion">Descripción</label>
+            <input class="form-control input-lg" placeholder="Descripcion del Asiento" id="descripcion" type=text></textarea>
+        </div>
+        <div class="col-sm-2">
+            <label for="datePicker">Fecha</label>
+            <input type="date" class="form-control" id="datePicker"></h4>
+        </div>
+        <div class="col-sm-4"> 
+            <label for="descripcion">Responsable</label>
+            <input class="form-control col-sm-8" placeholder="Creador del asiento" id="responsable" type=text disabled></textarea>
+        </div>
+    </div>
+    {% block registro %}
+    {% endblock %}
+</form>
+<hr/>
+<div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="table-responsive">
+                <table class="table table-striped" id="tabla-asientos">
+                    {% if data.asientos|length > 0 %}
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="w-50" style="text-align:left">Cuenta</th>
+                            <th>Debe</th>
+                            <th>Haber</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    {% block tabla %}
+                    {% endblock %}
+                    {% else %}
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <h2> Sin Transacciones</h2>
+                    </div>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    <div class="col-sm col-md col-lg col-xl">
+        <button type="button" class="btn btn-primary form-control " id="finalizar" name="finalizar" style="display: none"></button>
+    </div> 
+</div>
+
+{% endblock %}

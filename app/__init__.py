@@ -4,6 +4,8 @@ from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
+from app.models.ModeloCuenta import ModeloCuenta
+
 from .models.ModeloUsuario import ModeloUsuario
 from .models.entities.Usuario import Usuario
 from .utils import debugPrint
@@ -51,23 +53,53 @@ def index():
         return redirect(url_for('login'))
     return render_template('index.html')
 
-@app.route('/registrar_asiento')
+@app.route('/verasiento')
+@login_required
+def ver_asiento():
+    if not(current_user.is_authenticated):
+        return redirect(url_for('login'))
+    try:
+        #aca iria la logica de traer el asiento (id) desde la DB
+        asientos = [["Caja",15000,0],
+                    ["Proveedoreaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas",42000,1]]
+        data = {
+            'titulo': 'Asiento',
+            'id': '1234',
+            'asientos': asientos
+        }
+        return render_template('asientos/ver_asiento.html', data=data)
+    except Exception as e:
+        return render_template('errores/error.html')
+
+@app.route('/registrarasiento')
 @login_required
 def registrar_asiento():
     if not(current_user.is_authenticated):
         return redirect(url_for('login'))
-
     try:
-        asientos = [["Caja",15000,0],
-                    ["Proveedoreaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas",42000,1]]
         data = {
-            'titulo': 'Asientos...',
-            'asientos': asientos
+            'titulo': 'Asiento',
+            'id': '0',
+            'asientos': [["Caja",15000,0]]
         }
-        return render_template('vista_asiento.html', data=data)
+        return render_template('asientos/registrar_asiento.html', data=data)
     except Exception as e:
         debugPrint(e, "Registrar Asiento")
         return render_template('errores/error.html')
+
+@app.route('/cargarasiento', methods=['POST'])
+def cargar_asiento():
+    data = request.get_json()
+    debugPrint(data,"cargarasiento")
+    return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
+
+@app.route('/cuentas')
+@login_required
+def ver_cuentas():
+    familia_cuentas=ModeloCuenta().generarArbol(db)
+    debugPrint(familia_cuentas,"ver_cuentas")
+    return render_template('cuentas/cuentas.html',data=familia_cuentas)
+
 
 @app.route('/crearusuario', methods=['GET', 'POST'])
 def crearusuario():
