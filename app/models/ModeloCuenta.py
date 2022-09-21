@@ -17,7 +17,7 @@ class ModeloCuenta():
         acc = Cuenta(id = data["cuenta_id"], 
                     nombre = data["cuenta"], 
                     codigo = data["codigo"],
-                    recibe = data["recibe_saldo"],
+                    recibe = bool(data["recibe_saldo"]),
                     saldo = data["saldo_actual"],
                     tipo = self.Tipos[data["tipo_id"]],
                     padreid = data["cuenta_padre_id"])
@@ -26,7 +26,6 @@ class ModeloCuenta():
     @classmethod
     def obtenerPor(self,db,campo,valor):
         self.cargarTipos(db)
-        debugPrint()
         try:
             sql = """SELECT *
                     FROM CUENTAS c
@@ -44,8 +43,7 @@ class ModeloCuenta():
 
     @classmethod
     def obtenerCuentas(self,db):
-        debugPrint(self.cargarTipos(db),"ObtenerCUentas")
-
+        self.cargarTipos(db)
         sql = """SELECT *
                  FROM CUENTAS c"""
         allAccs = fetchAll(db,sql)
@@ -82,13 +80,24 @@ class ModeloCuenta():
         }
         hijos=cta.getHijos()
         if hijos != []:
+            d['backColor'] = " #a3e4d7"
             d['nodes']=[]
             for h in hijos:
                 d['nodes'].append(self.cuentaToDict(h))
+        else:
+            d['backColor'] = " #d1f2eb"
         return d
 
     @classmethod
     def generarArbol(self,db):
+        fam = self.generarFamilia(db)
+        tree = []
+        for p in fam:
+            tree.append(self.cuentaToDict(p))
+        return tree
+
+    @classmethod
+    def obtenerCuentasSaldo(self,db):
         fam = self.generarFamilia(db)
         tree = []
         for p in fam:

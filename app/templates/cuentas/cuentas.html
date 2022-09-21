@@ -27,12 +27,10 @@
         </div>
     </div>
 </div>
+<div id="tdata" hidden>{{data | tojson}}</div>
 {% endblock %}
 
 {% block customJS %}
-<script>
-    var arbol = JSON.parse('{{data | tojson}}')
-</script>
 <script src="{{ url_for('static', filename='lib/bootstrap-treeview/js/bootstrap-treeview.js') }}"></script>
 <script src="{{ url_for('static', filename='js/mostrarcuentas.js') }}"></script>
 {% endblock %}

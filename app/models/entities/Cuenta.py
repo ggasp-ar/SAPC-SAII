@@ -44,10 +44,7 @@ class Cuenta():
         return self.tipo
     
     def getRecibe(self):
-        if (self.hijos == []):
-            return True
-        else:
-            return False
+        return self.recibe_saldo
    
     def __repr__(self):
         attrs = self.id,self.codigo,self.nombre,self.tipo,self.saldo,self.padre,self.hijos

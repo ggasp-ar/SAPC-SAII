@@ -52,9 +52,7 @@
 
   const btnFinalizarAsiento = document.querySelector('button[id="finalizar"]')
   btnFinalizarAsiento.innerHTML = 'Finalizar Asiento'
-
   btnFinalizarAsiento.addEventListener('click', function () {
-    tabla = document.querySelectorAll('table[id="tabla-asientos"]')
     confirmarAsiento()
   })
   btnFinalizarAsiento.style.display = 'block'
