@@ -1,0 +1,40 @@
+{% extends './asientos/vista_asiento.html' %}
+
+
+{% block tabla %}
+  <tbody id="main-table">
+    {% set contador = namespace(totalDebe=0,totalHaber=0 ) %}
+    {% for l in data.asientos %}
+    {% set prefix2 = "&emsp;"*2 %}
+    <tr>
+        <td cuenta-id="{{ loop.index + 5000 }}">{{ loop.index }}</td>
+        {% if l[2] == 0 %}
+            <td style="text-align:left">{{ l[0] }}</td>
+            <td>$ {{ l[1] }}</td>
+            <td> - </td>
+            {% set contador.totalDebe = contador.totalDebe +  l[1] %}
+        {% else %}
+            <td style="text-align:left; padding-left: 3em;">{{ l[0] }}</td>
+            <td> - </td>
+            <td>$ {{ l[1] }}</td>
+            {% set contador.totalHaber = contador.totalHaber +  l[1] %}
+        {% endif %}     
+        <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEditarLibro st-btn">Editar</button></td>
+        <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEliminarLibro st-btn">Eliminar</button></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tbody>
+    <tr>
+        <td colspan="2"></td>
+        <td>$ {{ contador.totalDebe }}</td>
+        <td>$ {{ contador.totalHaber }}</td>
+        <td>$ {{ contador.totalDebe - contador.totalHaber }}</td>
+        <td colspan="1"></td>
+    </tr>
+  </tbody>
+{% endblock %}
+
+{% block customJS %}
+<script src="{{ url_for('static', filename='js/asientos/ver_asiento.js') }}"></script>
+{% endblock %}

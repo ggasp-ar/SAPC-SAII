@@ -1,0 +1,36 @@
+{% extends './asientos/vista_asiento.html' %}
+
+{% block registro %}
+
+<hr/>
+<div class="row">
+  <div class="col">
+    <label for="monto" style="padding-right: 25px;">Monto</label>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="checkDH" id="checkDebe">
+      <label class="form-check-label" for="checkDebe">Debe</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="checkDH" id="checkHaber">
+        <label class="form-check-label" for="checkHaber">Haber</label>
+    </div>
+    <input placeholder="Monto" class="form-control col-sm-7" type="numeric" id="monto" name="monto" min="0" oninput="validity.valid||(value='');">
+  </div>
+  <div class="col">
+  </div>
+</div>
+  
+<div class="row">
+  <div class="col">
+    <div class="col-sm col-md col-lg col-xl">
+        <button type="button" class="btn btn-primary " id="addAsiento" name="addAsiento" >Agregar</button>
+    </div>
+  </div>  
+</div>
+{% endblock %}
+
+{% block customJS %}
+<script src="{{ url_for('static', filename='lib/sweetalert2-9.10.0/sweetalert2.all.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/notificacionSwal.js') }}"></script>
+<script src="{{ url_for('static', filename='js/asientos/registrar_asiento.js') }}"></script>
+{% endblock %}
