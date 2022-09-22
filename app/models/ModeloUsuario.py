@@ -19,14 +19,27 @@ class ModeloUsuario():
 
     @classmethod
     def crear_usuario(self,db,nuevoUsuario):
-        return False #Deshabilitado temporalmente
-        # validar contraseña
         if nuevoUsuario[1] != nuevoUsuario[2]:
             return None
         try:
-            usuario = Usuario(0, nuevoUsuario[0], Usuario.crear_password(nuevoUsuario[1]), 2, nuevoUsuario[3])
-            sql = f"""INSERT INTO usuario (id, usuario, password, tipousuario_id, celular)
-                    VALUES ('NULL', '{usuario.usuario}', '{usuario.password}', 2, '{usuario.celular}') """
+            usuario = Usuario(None, nuevoUsuario[0], nuevoUsuario[0],0,Usuario.crear_password(nuevoUsuario[1]))
+            cursor = db.connection.cursor()
+            print(usuario.usuario, usuario.password)
+            sql = f"""INSERT INTO usuarios (`usuario`,
+                                            `nombre`,
+                                            `contrasenia`,
+                                            `rol_id`,
+                                            `habilitada`) 
+                                    VALUES ('{usuario.usuario}',
+                                            '{usuario.usuario}',
+                                            '{usuario.password}',
+                                            1,
+                                            1);""" # Rol ID 1 es usuario, 0 es Admin en este caso, cuidado
+                                            # y habria que ver si no dejar el habilitado en 0, 
+                                            # y que el admin habilite las nuevas cuentas registradas
+                                            # :thonk:
+            cursor.execute(sql)
+            db.connection.commit()
             return True
         except Exception as ex:
             raise Exception(ex)
@@ -42,7 +55,8 @@ class ModeloUsuario():
             usuario_logeado = Usuario(id=data["usuario_id"],
                                     usuario=data["usuario"],
                                     nombre=data["nombre"],
-                                    rol=data["rol_id"])
+                                    rol=data["rol_id"],
+                                    password=None)
             return usuario_logeado
         except Exception as ex:
             raise Exception(ex)
