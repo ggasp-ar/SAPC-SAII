@@ -59,7 +59,7 @@ def registrar_asiento():
 
     try:
         asientos = [["Caja",15000,0],
-                    ["Proveedoreaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas",42000,1]]
+                    ["Proveedores",42000,1]]
         data = {
             'titulo': 'Asientos...',
             'asientos': asientos
