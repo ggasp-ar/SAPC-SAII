@@ -77,6 +77,8 @@ def registrar_asiento():
     if not(current_user.is_authenticated):
         return redirect(url_for('login'))
     try:
+        asientos = [["Caja",15000,0],
+                    ["Proveedores",42000,1]]
         data = {
             'titulo': 'Asiento',
             'id': '0',
