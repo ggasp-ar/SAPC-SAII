@@ -13,16 +13,21 @@
     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
         <div id="tree"></div>
     </div>
-    <div class="col-sm-7">
+    <div class="col-sm-7 infotab">
         <div style="text-align: center;">
             <h1 id="codigo-cuenta"></h1>
             <h1 id="nombre-cuenta">Seleccione una Cuenta</h1>
-            <div class="row" id="inforow" style="visibility: hidden;">
-                <div class="col-sm">
-                    <label for="saldo-cuenta">Saldo </label>
-                    <input placeholder="Saldo" class="form-control input-sm" type="numeric" id="saldo-cuenta" name="saldo-cuenta" disabled>
+            <div id="inforow" style="visibility: hidden;">
+                <div class="row">
+                    <div class="col-sm">
+                        <label for="saldo-cuenta">Saldo </label>
+                        <input placeholder="Saldo" class="form-control input-sm" type="numeric" id="saldo-cuenta" name="saldo-cuenta" disabled>
+                    </div>
+                    <div id="tipo-cuenta" class="col-sm"></div>
                 </div>
-                <div id="tipo-cuenta" class="col-sm"></div>
+                <div class="row" style="padding-top: 20px">
+                    <button class="form-control" id="addacc" text="asd" disabled>Agregar Cuenta Hijo</button>
+                </div>
             </div>
         </div>
     </div>

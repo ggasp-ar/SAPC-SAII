@@ -2,7 +2,16 @@
 
 
 {% block tabla %}
+  <thead>
+    <tr>
+        <th>#</th>
+        <th class="w-50" style="text-align:left">Cuenta</th>
+        <th>Debe</th>
+        <th>Haber</th>
+    </tr>
+  </thead>
   <tbody id="main-table">
+    
     {% set contador = namespace(totalDebe=0,totalHaber=0 ) %}
     {% for l in data.asientos %}
     {% set prefix2 = "&emsp;"*2 %}
@@ -18,21 +27,17 @@
             <td> - </td>
             <td>$ {{ l[1] }}</td>
             {% set contador.totalHaber = contador.totalHaber +  l[1] %}
-        {% endif %}     
-        <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEditarLibro st-btn">Editar</button></td>
-        <td><button id="{{ l.isbn }}" class="btn btn-block btn-dark btnEliminarLibro st-btn">Eliminar</button></td>
+        {% endif %}
     </tr>
     {% endfor %}
   </tbody>
-  <tbody>
+  <tfoot>
     <tr>
         <td colspan="2"></td>
         <td>$ {{ contador.totalDebe }}</td>
         <td>$ {{ contador.totalHaber }}</td>
-        <td>$ {{ contador.totalDebe - contador.totalHaber }}</td>
-        <td colspan="1"></td>
     </tr>
-  </tbody>
+  </tfoot>
 {% endblock %}
 
 {% block customJS %}

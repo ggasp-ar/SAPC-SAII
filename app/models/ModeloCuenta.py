@@ -76,16 +76,18 @@ class ModeloCuenta():
             'saldo':cta.getSaldo(),
             'tipo':cta.getTipo().toDict(),
             'recibe':cta.getRecibe(),
-            'text':cta.getNombre()
+            'text':cta.getNombre(),
+            'tags':[(' ({})'.format(cta.getTipo().getTipo()))]
         }
         hijos=cta.getHijos()
         if hijos != []:
-            d['backColor'] = " #a3e4d7"
             d['nodes']=[]
             for h in hijos:
                 d['nodes'].append(self.cuentaToDict(h))
+        if d['recibe']:
+            d['backColor'] = " #EEEEEE"
         else:
-            d['backColor'] = " #d1f2eb"
+            d['backColor'] = " #FFFFFF"
         return d
 
     @classmethod

@@ -1,6 +1,69 @@
 (() => {
+  function generarRow (row, id, codigoCuenta, nombreCuenta, valor, haber) {
+    // Cell 1
+    row.insertCell(0).innerHTML = id
+    // Cell 2
+    const cell2 = row.insertCell(1)
+    cell2.style.textAlign = 'left'
+    cell2.innerHTML = nombreCuenta
+    cell2.className = `cuentaID = {$codigoCuenta}`
+    if (haber) {
+      cell2.style.paddingLeft = '3em'
+    }
+    // Cell 3
+    row.insertCell(2).innerHTML = ((haber) ? '-' : '$ ' + valor)
+    // Cell 4
+    row.insertCell(3).innerHTML = ((haber) ? '$ ' + valor : '-')
+    // Cell 5
+    row.insertCell(4).innerHTML = `<button id="editarAsiento" rowid={$id} class="btn btn-block btn-dark btnEditarLibro st-btn">Editar</button>`
+    row.insertCell(5).innerHTML = `<button id="eliminarAsiento" rowid={$id} class="btn btn-block btn-dark btnEliminarLibro st-btn">Eliminar</button>`
+  }
+
+  function getRow (id) {
+    const table = $('#main-table')[0]
+    $(table.rows[2]).find('td:nth-child(2)').text()
+    return 0
+  }
+
+  /* CHEQUEO DE SI ES POR EL DEBE O POR EL HABER */
+  function getRadio (id) {
+    return $(id).prop('checked')
+  }
+
+  function getHaber () {
+    if (getRadio('#checkDebe')) {
+      return false
+    } else if (getRadio('#checkHaber')) {
+      return true
+    } else {
+      throw 'error al elegir debe/haber'
+    }
+  }
+
+  /* CHEQUEO DE QUE HAYA INGRESADO UN MONTO */
+  function getMonto () {
+    const v = $('#monto')[0].value
+    if (v > 0) {
+      return v
+    } else {
+      throw 'Monto invalido'
+    }
+  }
+
+  /* OBTENER CUENTA SELECCIONADA */
+
+  function getCuenta () {
+    const cuenta = $('#cuenta')[0]
+    const selection = cuenta.options[cuenta.selectedIndex]
+    return { id: selection.getAttribute('cid'), nombre: selection.getAttribute('value') }
+  }
+
+  /* AL APRETAR AGREGAR */
   document.querySelector('button[id="addAsiento"]').addEventListener('click', function () {
-    alert('Todavia no implementado')
+    const table = $('#main-table')[0]
+    const row = table.insertRow(-1)
+    const cuenta = getCuenta()
+    generarRow(row, 1, cuenta.id, cuenta.nombre, getMonto(), getHaber())
   })
 
   $('#descripcion').keydown(function (e) {
@@ -9,6 +72,10 @@
       // prevent default behavior
       e.preventDefault()
     }
+  })
+
+  $(window).bind('beforeunload', function () {
+    return 'Seguro que desea salir? Se perdera todo el progreso en el asiento'
   })
 
   let today = new Date()

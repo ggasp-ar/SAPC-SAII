@@ -1,7 +1,7 @@
 html,
 body{
   height: 100%;
-  background-color: #ffffff;
+  /*background-color: #dbe2ea ;*/
 }
 .form-check-input {
   margin-top: 12px;
@@ -13,7 +13,7 @@ table {
 }
 
 div[class="container py-3"]{
-  background-color: #dadada;
+  background-color: #DDDDDD ;
   font-size: x-large;
   border-radius: 1rem;
   border-style:groove;
