@@ -61,7 +61,7 @@ def ver_asiento():
     try:
         #aca iria la logica de traer el asiento (id) desde la DB
         asientos = [["Caja",15000,0],
-                    ["Proveedoreaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas",42000,1]]
+                    ["Proveedores",42000,1]]
         data = {
             'titulo': 'Asiento',
             'id': '1234',
@@ -92,6 +92,7 @@ def registrar_asiento():
 @app.route('/cargarasiento', methods=['POST'])
 def cargar_asiento():
     data = request.get_json()
+    print(data)
     debugPrint(data,"cargarasiento")
     return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
 
