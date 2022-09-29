@@ -95,13 +95,7 @@ def registrar_asiento():
         debugPrint(data,"registrar asiento / post")
         return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
 
-@app.route('/cargarasiento', methods=['POST'])
-def cargar_asiento():
-    data = request.get_json()
-    debugPrint(data,"cargarasiento")
-    return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
-
-@app.route('/cuentas')
+@app.route('/cuentas', methods=['GET', 'POST'])
 @login_required
 def ver_cuentas():
     familia_cuentas=ModeloCuenta().generarArbol(db)
@@ -109,7 +103,6 @@ def ver_cuentas():
         return jsonify(ModeloCuenta().obtenerCuentasSaldo(db))
     else:
         return render_template('cuentas/cuentas.html',data=familia_cuentas)
-
 
 @app.route('/crearusuario', methods=['GET', 'POST'])
 def crearusuario():

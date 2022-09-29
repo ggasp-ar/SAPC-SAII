@@ -98,6 +98,8 @@
           body: JSON.stringify({
             responsableid: data.responsableid,
             responsable: data.responsable,
+            descripcion: $('#descripcion')[0].value,
+            fecha: $('#datePicker')[0].value,
             asientos: tabla
           })
         }).then(response => {
