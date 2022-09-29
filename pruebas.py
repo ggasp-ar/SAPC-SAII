@@ -1,0 +1,1 @@
+print("Admin") if 1 == 0  else print("Usuario")

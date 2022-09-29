@@ -95,7 +95,6 @@ def registrar_asiento():
         debugPrint(data,"registrar asiento / post")
         return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
 
-        
 @app.route('/cuentas', methods=['GET', 'POST'])
 @login_required
 def ver_cuentas():
