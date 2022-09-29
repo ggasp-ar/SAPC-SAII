@@ -89,7 +89,19 @@ class ModeloCuenta():
         else:
             d['backColor'] = " #FFFFFF"
         return d
-
+    
+    @classmethod
+    def cuentaToDictSimplificado(self,cta):
+        d={
+            'cid':cta.getId(),
+            'codigo':cta.getCodigo(),
+            'saldo':cta.getSaldo(),
+            'tipo':cta.getTipo().toDict(),
+            'text':cta.getNombre(),
+            'tags':[(' ({})'.format(cta.getTipo().getTipo()))]
+        }
+        return d
+    
     @classmethod
     def generarArbol(self,db):
         fam = self.generarFamilia(db)
@@ -100,10 +112,10 @@ class ModeloCuenta():
 
     @classmethod
     def obtenerCuentasSaldo(self,db):
-        fam = self.generarFamilia(db)
-        tree = []
-        for p in fam:
-            tree.append(self.cuentaToDict(p))
-        return tree
+        acc = self.obtenerPor(db, "recibe_saldo","1")
+        accs = []
+        for c in acc:
+            accs.append(self.cuentaToDictSimplificado(c))
+        return accs
 
 

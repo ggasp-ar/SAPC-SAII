@@ -61,46 +61,49 @@ def ver_asiento():
     try:
         #aca iria la logica de traer el asiento (id) desde la DB
         asientos = [["Caja",15000,0],
-                    ["Proveedoreaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas",42000,1]]
+                    ["Proveedores",42000,1]]
         data = {
             'titulo': 'Asiento',
             'id': '1234',
+            'responsable': 'indef',
+            'responsableid': 'indef',
             'asientos': asientos
         }
         return render_template('asientos/ver_asiento.html', data=data)
     except Exception as e:
         return render_template('errores/error.html')
 
-@app.route('/registrarasiento')
+@app.route('/registrarasiento', methods=['GET', 'POST'])
 @login_required
 def registrar_asiento():
-    if not(current_user.is_authenticated):
-        return redirect(url_for('login'))
-    try:
-        asientos = [["Caja",15000,0],
-                    ["Proveedores",42000,1]]
-        data = {
-            'titulo': 'Asiento',
-            'id': '0',
-            'asientos': [["Caja",15000,0]]
-        }
-        return render_template('asientos/registrar_asiento.html', data=data)
-    except Exception as e:
-        debugPrint(e, "Registrar Asiento")
-        return render_template('errores/error.html')
+    if request.method == 'GET':
+        if not(current_user.is_authenticated):
+            return redirect(url_for('login'))
+        try:
+            data = {
+                'titulo': 'Asiento',
+                'id': '0',
+                'responsable': current_user.nombre,
+                'responsableid': current_user.id
+            }
+            return render_template('asientos/registrar_asiento.html', data=data)
+        except Exception as e:
+            debugPrint(e, "Registrar Asiento")
+            return render_template('errores/error.html')
+    else:
+        data = request.get_json()
+        debugPrint(data,"registrar asiento / post")
+        return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
 
-@app.route('/cargarasiento', methods=['POST'])
-def cargar_asiento():
-    data = request.get_json()
-    debugPrint(data,"cargarasiento")
-    return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
-
-@app.route('/cuentas')
+        
+@app.route('/cuentas', methods=['GET', 'POST'])
 @login_required
 def ver_cuentas():
     familia_cuentas=ModeloCuenta().generarArbol(db)
-    debugPrint(familia_cuentas,"ver_cuentas")
-    return render_template('cuentas/cuentas.html',data=familia_cuentas)
+    if request.method == 'POST':
+        return jsonify(ModeloCuenta().obtenerCuentasSaldo(db))
+    else:
+        return render_template('cuentas/cuentas.html',data=familia_cuentas)
 
 
 @app.route('/crearusuario', methods=['GET', 'POST'])

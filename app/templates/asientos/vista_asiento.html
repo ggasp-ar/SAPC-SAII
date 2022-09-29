@@ -23,11 +23,11 @@
             <div class="row">
                 <div class="col-sm-4">
                     <label for="datePicker">Fecha</label>
-                    <input type="date" class="form-control" id="datePicker"></h4>
+                    <input type="date" class="form-control" id="datePicker" disabled></h4>
                 </div>
                 <div class="col-sm-8"> 
                     <label for="descripcion">Responsable</label>
-                    <input class="form-control" placeholder="Creador del asiento" id="responsable" type=text disabled></textarea>
+                    <input class="form-control" placeholder="Creador del asiento" id="responsable" uid={{data.responsableid}} type=text value='{{data.responsable}}' disabled></textarea>
                 </div>
             </div>
         </div>
