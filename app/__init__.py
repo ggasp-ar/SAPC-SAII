@@ -92,7 +92,6 @@ def registrar_asiento():
 @app.route('/cargarasiento', methods=['POST'])
 def cargar_asiento():
     data = request.get_json()
-    print(data)
     debugPrint(data,"cargarasiento")
     return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
 
