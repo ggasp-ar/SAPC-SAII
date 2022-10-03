@@ -11,25 +11,28 @@
     }
   })
 
-  $(window).bind('beforeunload', function () {
-    return 'Seguro que desea salir? Se perdera todo el progreso en el asiento'
-  })
+  window.onbeforeunload = function () {
+    return 'Si recarga se perdera la informacion del asiento'
+  }
 
-  let today = new Date()
-  let dd = today.getDate()
-  let mm = today.getMonth() + 1 // January is 0 so need to add 1 to make it 1!
   const dp = document.getElementById('datePicker')
-  const yyyy = today.getFullYear()
-  if (dd < 10) {
-    dd = '0' + dd
-  }
-  if (mm < 10) {
-    mm = '0' + mm
-  }
-  today = yyyy + '-' + mm + '-' + dd
-
-  // tomorrow = yyyy+'-'+mm+'-'+(dd+1);
-  dp.value = today
+  const today = new Date()
+  /*
+    let dd = today.getDate()
+    let mm = today.getMonth() + 1 // January is 0 so need to add 1 to make it 1!
+    const yyyy = today.getFullYear()
+    if (dd < 10) {
+      dd = '0' + dd
+    }
+    if (mm < 10) {
+      mm = '0' + mm
+    }
+    today = yyyy + '-' + mm + '-' + dd
+    console.log(today)
+    // tomorrow = yyyy+'-'+mm+'-'+(dd+1);
+    // dp.value = today
+  */
+  dp.value = today.toISOString().slice(0, 16)
 
   /*
   function getTablaInfo () {
@@ -96,6 +99,7 @@
             'X-CSRFToken': csrfToken
           },
           body: JSON.stringify({
+            id: data.id,
             responsableid: data.responsableid,
             responsable: data.responsable,
             descripcion: $('#descripcion')[0].value,
@@ -109,7 +113,7 @@
           return response.json()
         }).then(respData => {
           if (respData.exito) {
-            notificacionSwal('¡Éxito!', 'success', 'Ok!')
+            notifSwalReset('¡Éxito!', respData.mensaje, 'success', 'Ok')
           } else {
             notificacionSwal('Ocurrio un error..', respData.mensaje, 'warning', 'Ok')
           }
@@ -201,6 +205,7 @@
     if (v > 0) {
       return v
     } else {
+      Swal.fire('Monto invalido')
       throw new Error('Monto invalido')
     }
   }

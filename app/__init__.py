@@ -3,6 +3,7 @@ from flask import Flask, flash, redirect, render_template, request, url_for, jso
 from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from app.models.ModeloAsiento import ModeloAsiento
 
 from app.models.ModeloCuenta import ModeloCuenta
 
@@ -76,24 +77,30 @@ def ver_asiento():
 @app.route('/registrarasiento', methods=['GET', 'POST'])
 @login_required
 def registrar_asiento():
+    MA = ModeloAsiento()
     if request.method == 'GET':
         if not(current_user.is_authenticated):
             return redirect(url_for('login'))
         try:
             data = {
                 'titulo': 'Asiento',
-                'id': '0',
+                'id': MA.nextAsientoId(db),
                 'responsable': current_user.nombre,
                 'responsableid': current_user.id
             }
             return render_template('asientos/registrar_asiento.html', data=data)
         except Exception as e:
-            debugPrint(e, "Registrar Asiento")
             return render_template('errores/error.html')
     else:
         data = request.get_json()
-        debugPrint(data,"registrar asiento / post")
-        return jsonify({'exito':False,'mensaje':'Todavia no esta implementada la carga de asientos'})
+        asiento = MA.crearAsiento(data)
+        #MA.verificarAsiento(asiento) if true: 
+        MA.cargarAsiento(db, asiento)
+        try:
+            return jsonify({'exito':True,'mensaje':'Asiento Cargado'})
+        except:
+            return jsonify({'exito':False,'mensaje':'Fallo la carga de asientos'})
+        
 
 @app.route('/cuentas', methods=['GET', 'POST'])
 @login_required
