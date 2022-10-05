@@ -15,11 +15,14 @@
           <a class="nav-link" href="{{ url_for('registrar_asiento') }}">Registrar Asiento</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('ver_asiento') }}">ver Asiento</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{{ url_for('logout') }}">Cerrar Sesi&oacute;n</a>
         </li>
       </ul>
       <span class="navbar-text">
-        <strong>{{ current_user.nombre }}</strong> 
+      <strong>{{ current_user.nombre }} - {{ if current_user.rol == 0: return "Admin"; return "Usuario" }}</strong> 
     </div>
   </nav>
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
