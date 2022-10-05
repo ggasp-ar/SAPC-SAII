@@ -21,8 +21,6 @@
   <div class="col-sm-4">
     <label for="cuenta">Elegir Cuenta</label>
     <select name="cuenta" class="form-control" id="cuenta">
-      <option value="caja" cid="5005">Caja</option>
-      <option value="proveedores" cid="6001">Proveedores</option>
     </select> 
   </div>
   <div class="col-sm-2" >
@@ -68,9 +66,9 @@
   <tfoot>
     <tr>
         <td colspan="2"></td>
-        <td>$ {{ contador.totalDebe }}</td>
-        <td>$ {{ contador.totalHaber }}</td>
-        <td>$ {{ contador.totalDebe - contador.totalHaber }}</td>
+        <td id="totalDebe">$ {{ contador.totalDebe }}</td>
+        <td id="totalHaber">$ {{ contador.totalHaber }}</td>
+        <td id="totalDiferencia">$ {{ contador.totalDebe - contador.totalHaber }}</td>
         <td colspan="1"></td>
     </tr>
   </tfoot>

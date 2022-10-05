@@ -16,7 +16,7 @@ INSERT INTO roles_tareas VALUES
 (0,21),(0,22),(0,23);
 
 INSERT INTO usuarios(usuario,nombre,contrasenia,rol_id,habilitada) VALUE ('Admin',
-'Marcos Suckerber',
+'Marcos Suckerberg',
 'pbkdf2:sha256:260000$UE3VkQ302ZWXCaBk$d932b47f7ec2856b81aa381514df39defd34b603b1e5acf70ec4dc9a01bb8d42',
 0,1);
 
@@ -27,9 +27,15 @@ INSERT INTO tipos VALUES
 (4,'R+','Resultados Positivos'),
 (5,'R-','Resultados Negativos');
 
-INSERT INTO cuentas (cuenta,codigo,tipo_id,recibe_saldo,saldo_actual) VALUES
-('Activo',100,1,0,0),
-('Pasivo',200,2,0,0),
-('Patrimonio',300,3,0,0),
-('Ingresos',400,4,0,0),
-('Egresos',500,5,0,0);
+INSERT INTO cuentas (cuenta,codigo,tipo_id,recibe_saldo,saldo_actual,cuenta_padre_id) VALUES
+('Activo',100,1,0,0,null),
+('Pasivo',200,2,0,0,null),
+('Patrimonio',300,3,0,0,null),
+('Ingresos',400,4,0,0,null),
+('Egresos',500,5,0,0,null);
+
+INSERT INTO cuentas (cuenta,codigo,tipo_id,recibe_saldo,saldo_actual,cuenta_padre_id) VALUES
+('Caja y Bancos',110,1,0,0,100),
+('Caja',111,1,1,0,110),
+('Banco Plazo Fijo',112,1,1,0,110),
+('Banco c/c',113,1,1,0,110);

@@ -22,7 +22,7 @@
         </li>
       </ul>
       <span class="navbar-text">
-      <strong>{{ current_user.nombre }} - {{ if current_user.rol == 0: return "Admin"; return "Usuario" }}</strong> 
+        <strong>{{ current_user.nombre }} - {{ "Admin" if current_user.rol == 0 else "Usuario" }}</strong> 
     </div>
   </nav>
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

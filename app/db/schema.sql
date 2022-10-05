@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `sapc_test`.`ROLES` (
   `rol_id` INT NOT NULL,
   `descripcion` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`rol_id`),
-  UNIQUE INDEX `descripcion_UNIQUE` (`descripcion` ASC) VISIBLE)
+  UNIQUE INDEX `descripcion_UNIQUE` (`descripcion` ASC) )
 ENGINE = InnoDB;
 
 
@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS `sapc_test`.`USUARIOS` (
   `rol_id` INT NOT NULL,
   `habilitada` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`usuario_id`),
-  INDEX `rol_id_idx` (`rol_id` ASC) VISIBLE,
-  UNIQUE INDEX `usuario_UNIQUE` (`usuario` ASC) VISIBLE,
+  INDEX `rol_id_idx` (`rol_id` ASC) ,
+  UNIQUE INDEX `usuario_UNIQUE` (`usuario` ASC) ,
   CONSTRAINT `USUARIOS_ROLES_FK`
     FOREIGN KEY (`rol_id`)
     REFERENCES `sapc_test`.`ROLES` (`rol_id`)
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `sapc_test`.`TAREAS` (
   `tarea_id` INT NOT NULL,
   `tarea` VARCHAR(45) NULL,
   PRIMARY KEY (`tarea_id`),
-  UNIQUE INDEX `tarea_UNIQUE` (`tarea` ASC) VISIBLE)
+  UNIQUE INDEX `tarea_UNIQUE` (`tarea` ASC) )
 ENGINE = InnoDB;
 
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `sapc_test`.`ROLES_TAREAS` (
   `rol_id` INT NOT NULL,
   `tarea_id` INT NOT NULL,
   PRIMARY KEY (`rol_id`, `tarea_id`),
-  INDEX `ROLESTAREAS_TAREAS_FK_idx` (`tarea_id` ASC) VISIBLE,
+  INDEX `ROLESTAREAS_TAREAS_FK_idx` (`tarea_id` ASC) ,
   CONSTRAINT `ROLESTAREAS_ROLES_FK`
     FOREIGN KEY (`rol_id`)
     REFERENCES `sapc_test`.`ROLES` (`rol_id`)
@@ -83,11 +83,11 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sapc_test`.`ASIENTOS` (
   `asiento_id` INT NOT NULL AUTO_INCREMENT,
-  `fecha` DATE NOT NULL,
-  `desc` VARCHAR(45) NOT NULL,
+  `fecha` DATETIME NOT NULL,
+  `descripcion` VARCHAR(45) NOT NULL,
   `usuario_id` INT NOT NULL,
   PRIMARY KEY (`asiento_id`),
-  INDEX `usuario_id_idx` (`usuario_id` ASC) VISIBLE,
+  INDEX `usuario_id_idx` (`usuario_id` ASC) ,
   CONSTRAINT `ASIENTOS_USUARIOS_FK`
     FOREIGN KEY (`usuario_id`)
     REFERENCES `sapc_test`.`USUARIOS` (`usuario_id`)
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `sapc_test`.`TIPOS` (
   `tipo` VARCHAR(3) NOT NULL,
   `descripcion` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`tipo_id`),
-  UNIQUE INDEX `TIPOScol_UNIQUE` (`tipo` ASC) VISIBLE)
+  UNIQUE INDEX `TIPOScol_UNIQUE` (`tipo` ASC) )
 ENGINE = InnoDB;
 
 
@@ -114,17 +114,24 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `sapc_test`.`CUENTAS` (
   `cuenta_id` INT NOT NULL AUTO_INCREMENT,
   `cuenta` VARCHAR(45) NOT NULL,
+  `cuenta_padre_id` INT NULL,
   `codigo` INT NOT NULL,
   `tipo_id` INT NOT NULL,
   `recibe_saldo` TINYINT NOT NULL DEFAULT 0,
   `saldo_actual` DOUBLE NOT NULL DEFAULT 0,
   PRIMARY KEY (`cuenta_id`),
-  INDEX `tipo_id_idx` (`tipo_id` ASC) VISIBLE,
-  UNIQUE INDEX `cuenta_UNIQUE` (`cuenta` ASC) VISIBLE,
-  UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC) VISIBLE,
+  INDEX `tipo_id_idx` (`tipo_id` ASC) ,
+  UNIQUE INDEX `cuenta_UNIQUE` (`cuenta` ASC) ,
+  UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC) ,
+  INDEX `CUENTAS_PADRE_FK_idx` (`cuenta_padre_id` ASC) ,
   CONSTRAINT `CUENTAS_TIPOS_FK`
     FOREIGN KEY (`tipo_id`)
     REFERENCES `sapc_test`.`TIPOS` (`tipo_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `CUENTAS_PADRE_FK`
+    FOREIGN KEY (`cuenta_padre_id`)
+    REFERENCES `sapc_test`.`CUENTAS` (`codigo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -139,9 +146,9 @@ CREATE TABLE IF NOT EXISTS `sapc_test`.`ASIENTOS_CUENTAS` (
   `valor` DOUBLE NULL,
   `orden` INT NOT NULL,
   `saldo` DOUBLE NOT NULL,
-  `debe_haber` TINYINT NOT NULL,
-  PRIMARY KEY (`asiento_id`, `cuenta_id`),
-  INDEX `AC_CUENTAS_FK_idx` (`cuenta_id` ASC) VISIBLE,
+  `haber` TINYINT NOT NULL,
+  PRIMARY KEY (`asiento_id`, `cuenta_id`, `orden`),
+  INDEX `AC_CUENTAS_FK_idx` (`cuenta_id` ASC) ,
   CONSTRAINT `AC_ASIENTOS_FK`
     FOREIGN KEY (`asiento_id`)
     REFERENCES `sapc_test`.`ASIENTOS` (`asiento_id`)
