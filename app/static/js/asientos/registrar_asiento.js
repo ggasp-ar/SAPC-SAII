@@ -1,5 +1,5 @@
 (() => {
-  const tabla = []
+  const tabla = {}
   const data = JSON.parse($('#data')[0].innerHTML)
   const csrfToken = document.querySelector("[name='csrf_token']").value
   const cuentasUsadas = []
@@ -79,6 +79,7 @@
   btnFinalizarAsiento.style.display = 'block'
 
   const confirmarAsiento = () => {
+    console.log(tabla)
     Swal.fire({
       title: '¿Está seguro?',
       inputAttributes: {
@@ -128,15 +129,20 @@
     })
   }
 
-  function cargarSeleccion (cuentas) {
+  function cargarSeleccion (cuentas = []) {
     const cuentaSelect = $('#cuenta')[0]
     cuentaSelect.innerHTML = ''
-    cuentasSaldo = cuentas
+
+    if (cuentas.length === 0) {
+      console.log(1)
+      cuentas = cuentasSaldo
+    } else {
+      console.log(2)
+      cuentasSaldo = cuentas
+    }
+
     for (const elem of cuentas) {
-      console.log(cuentasUsadas)
-      console.log(elem.cid)
       if (cuentasUsadas.includes(elem.cid)) {
-        console.log(elem)
         continue
       }
       const option = document.createElement('option')
@@ -173,6 +179,32 @@
   let haber = 0
 
   recargarCuentas()
+  /* Funcion utilizada para eliminar filas */
+
+  function eliminarAsiento (btn, rowid) {
+    console.log('-----------------------------------')
+    const asiento = tabla[rowid]
+    tabla[rowid] = null
+    cuentasUsadas.splice(cuentasUsadas.indexOf(asiento.cuenta_id), 1)
+    cargarSeleccion()
+    console.log('-------------')
+    console.log(tabla)
+    console.log(rowid)
+    console.log('-----------------------------------')
+
+    const td = btn.parentNode
+    const tr = td.parentNode
+    tr.parentNode.removeChild(tr)
+    console.log(asiento)
+
+    if (asiento.haber) {
+      haber -= asiento.monto
+      $('#totalHaber')[0].innerHTML = '$ ' + haber
+    } else {
+      debe -= asiento.monto
+      $('#totalDebe')[0].innerHTML = '$ ' + debe
+    }
+  }
 
   /* Funcion utilizada para generar cada fila de la tabla */
   function generarRow (row, id, nombreCuenta, valor, haber) {
@@ -193,7 +225,13 @@
     // Cell 5
     // row.insertCell(4).innerHTML = '<button id="editarAsiento" rowid=' + id + ' class="btn btn-block btn-dark btnEditarLibro st-btn">Editar</button>'
     row.insertCell(4).innerHTML = ''
-    row.insertCell(5).innerHTML = '<button id="eliminarAsiento" rowid=' + id + ' class="btn btn-block btn-dark btnEliminarLibro st-btn">Eliminar</button>'
+
+    const delBtn = document.createElement('button')
+    delBtn.onclick = () => { eliminarAsiento(delBtn, id) }
+    delBtn.innerHTML = 'Eliminar'
+    delBtn.className = 'btn btn-block btn-dark btnEliminarLibro st-btn'
+    delBtn.setAttribute('rowid', id)
+    row.insertCell(5).appendChild(delBtn)
   }
 
   /* CHEQUEO DE SI ES POR EL DEBE O POR EL HABER */
@@ -233,8 +271,8 @@
   /* AL APRETAR AGREGAR */
   document.querySelector('button[id="addAsiento"]').addEventListener('click', function () {
     const table = $('#main-table')[0]
-    const row = table.insertRow(-1)
     const cuenta = getCuenta()
+    const row = table.insertRow(-1)
     generarRow(row, asientoActual, cuenta.nombre, getMonto(), getHaber())
     tabla[asientoActual] = { // Estructura que se envia al serivdor
       monto: getMonto(),
@@ -244,7 +282,7 @@
     }
 
     cuentasUsadas.push(cuenta.cuenta_id)
-    cargarSeleccion(cuentasSaldo)
+    cargarSeleccion()
 
     if (getHaber()) {
       haber += getMonto()

@@ -95,9 +95,12 @@ def registrar_asiento():
     else:
         try:
             data = request.get_json()
+            
             asiento, cuentas_modificadas = MA.verificarAsiento(MA.crearAsiento(data),
                                                             MC.obtenerCuentasSaldo(db, False))
             debugPrint(cuentas_modificadas, "registrar asiento POST")
+            debugPrint(asiento, "registrar asiento POST")
+            
             #MA.cargarAsiento(db, asiento)
             #MC.actualizarCuentas(db, cuentas_modificadas)
             return jsonify({'exito':True,'mensaje':'Asiento Cargado'})

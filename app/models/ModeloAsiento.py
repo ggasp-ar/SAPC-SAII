@@ -10,14 +10,21 @@ class ModeloAsiento():
 
     @classmethod
     def crearAsiento(self, raw_asiento):
+      print(raw_asiento)
+      transacciones=[]
+      a = raw_asiento['asientos']
+      for t in a:
+        if a[t] != None:
+          transacciones.append(a[t])
       return Asiento(id=raw_asiento['id'],
           fecha=raw_asiento['fecha'], 
           desc=raw_asiento['descripcion'], 
           usuario_id=raw_asiento['responsableid'], 
-          asientos=raw_asiento['asientos'])
+          asientos=transacciones)
 
     @classmethod
     def cargarAsiento(self, db, asiento):
+      debugPrint(asiento, 'cargaAsiento()')
       cursor = db.connection.cursor()
       cursor.execute("INSERT INTO asientos (fecha, descripcion, usuario_id) VALUES (%s, %s, %s)",
         (asiento.getFecha(),
