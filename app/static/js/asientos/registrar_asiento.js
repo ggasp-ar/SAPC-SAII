@@ -79,7 +79,6 @@
   btnFinalizarAsiento.style.display = 'block'
 
   const confirmarAsiento = () => {
-    console.log(tabla)
     Swal.fire({
       title: '¿Está seguro?',
       inputAttributes: {
@@ -132,12 +131,9 @@
   function cargarSeleccion (cuentas = []) {
     const cuentaSelect = $('#cuenta')[0]
     cuentaSelect.innerHTML = ''
-
     if (cuentas.length === 0) {
-      console.log(1)
       cuentas = cuentasSaldo
     } else {
-      console.log(2)
       cuentasSaldo = cuentas
     }
 
@@ -182,20 +178,14 @@
   /* Funcion utilizada para eliminar filas */
 
   function eliminarAsiento (btn, rowid) {
-    console.log('-----------------------------------')
     const asiento = tabla[rowid]
     tabla[rowid] = null
     cuentasUsadas.splice(cuentasUsadas.indexOf(asiento.cuenta_id), 1)
     cargarSeleccion()
-    console.log('-------------')
-    console.log(tabla)
-    console.log(rowid)
-    console.log('-----------------------------------')
 
     const td = btn.parentNode
     const tr = td.parentNode
     tr.parentNode.removeChild(tr)
-    console.log(asiento)
 
     if (asiento.haber) {
       haber -= asiento.monto

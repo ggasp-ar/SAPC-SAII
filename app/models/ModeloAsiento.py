@@ -24,7 +24,6 @@ class ModeloAsiento():
 
     @classmethod
     def cargarAsiento(self, db, asiento):
-      debugPrint(asiento, 'cargaAsiento()')
       cursor = db.connection.cursor()
       cursor.execute("INSERT INTO asientos (fecha, descripcion, usuario_id) VALUES (%s, %s, %s)",
         (asiento.getFecha(),
@@ -33,14 +32,11 @@ class ModeloAsiento():
       
       aid= cursor.lastrowid
       type(asiento.getAsientos())
-      debugPrint(asiento.getAsientos(), 'cargaAsiento() para el asiento {}'.format(aid))
       
       i=0
       for tr in asiento.getAsientos():
         sql = 'INSERT INTO asientos_cuentas (asiento_id, cuenta_id, orden, valor, saldo, haber) VALUES (%s, %s, %s,%s, %s, %s)'
         values = (aid, int(tr['cuenta_id']), i, tr['monto'], 0, int(tr['haber']))
-        debugPrint("SQL" + sql, "Insertando Asiento")
-        debugPrint(values, "Insertando Asiento" )
         cursor.execute(sql,values)
         i = i+1
       
