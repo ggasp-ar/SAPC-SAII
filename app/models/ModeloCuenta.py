@@ -24,7 +24,7 @@ class ModeloCuenta():
         return acc
 
     @classmethod
-    def obtenerPor(self,db,campo,valor):
+    def obtenerPor(self,db,campo,valor, byCodigo):
         self.cargarTipos(db)
         try:
             sql = """SELECT *
@@ -32,9 +32,11 @@ class ModeloCuenta():
                     WHERE c.{0} = {1} """.format(campo,valor)      
             data = fetchAll(db,sql)
             if data != None:
-                cuentas=[]
+                cuentas={}
                 for c in data:
-                    cuentas.append(self.generarCuenta(c)) 
+                    cuenta = self.generarCuenta(c)
+                    index = (cuenta.getCodigo() if byCodigo else cuenta.getId())
+                    cuentas[index] = cuenta 
             else:
                 cuentas = None
             return cuentas
@@ -111,11 +113,23 @@ class ModeloCuenta():
         return tree
 
     @classmethod
-    def obtenerCuentasSaldo(self,db):
-        acc = self.obtenerPor(db, "recibe_saldo","1")
+    def obtenerCuentasSaldo(self,db, byCodigo=True):
+        acc = self.obtenerPor(db, "recibe_saldo","1", byCodigo)
+        return acc
+        
+    @classmethod
+    def obtenerDict(self,cuentas,simplificado=False):
         accs = []
-        for c in acc:
-            accs.append(self.cuentaToDictSimplificado(c))
+        for c in cuentas:
+            if simplificado:
+                accs.append(self.cuentaToDictSimplificado(cuentas[c]))
+            else:
+                accs.append(self.cuentaToDict(cuentas[c]))
         return accs
 
-
+    
+    @classmethod
+    def actualizarCuentas(self,cuentas):
+        #for c in cuentas:
+            #actualizar
+        return True

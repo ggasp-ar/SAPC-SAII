@@ -35,10 +35,13 @@ class Cuenta():
     
     def getPadreId(self):
         return self.padreid
-
     
     def getSaldo(self):
         return self.saldo
+    
+    def setSaldo(self,nuevoSaldo):
+        self.saldo = nuevoSaldo
+        return nuevoSaldo
     
     def getTipo(self):
         return self.tipo
@@ -46,6 +49,15 @@ class Cuenta():
     def getRecibe(self):
         return self.recibe_saldo
    
+    def transaccion(self, monto, haber):
+        nuevoMonto = self.getSaldo() + self.getTipo().transaccion(monto,haber)
+        if nuevoMonto < 0:
+            err = "La cuenta " + self.nombre + " no tiene suficiente saldo para realizar la transaccion."
+            raise Exception(err)
+        self.setSaldo(nuevoMonto)
+        print("Transaccion:", nuevoMonto, "a la cuenta", self.nombre, "  Nuevo Saldo:", self.getSaldo())
+        return True
+
     def __repr__(self):
         attrs = self.id,self.codigo,self.nombre,self.tipo,self.saldo,self.padre,self.hijos
         stratr = []

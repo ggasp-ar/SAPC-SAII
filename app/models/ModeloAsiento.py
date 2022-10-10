@@ -29,15 +29,33 @@ class ModeloAsiento():
       debugPrint(asiento.getAsientos(), 'cargaAsiento() para el asiento {}'.format(aid))
       
       i=0
-      for a in asiento.getAsientos():
+      for tr in asiento.getAsientos():
         sql = 'INSERT INTO asientos_cuentas (asiento_id, cuenta_id, orden, valor, saldo, haber) VALUES (%s, %s, %s,%s, %s, %s)'
-        values = (aid, int(a['cuenta_id']), i, a['monto'], 0, int(a['haber']))
+        values = (aid, int(tr['cuenta_id']), i, tr['monto'], 0, int(tr['haber']))
         debugPrint("SQL" + sql, "Insertando Asiento")
         debugPrint(values, "Insertando Asiento" )
         cursor.execute(sql,values)
         i = i+1
       
       db.connection.commit()
+
+    @classmethod
+    def verificarAsiento(self, asiento, cuentas, noDupes=True):
+      cuentas_usadas = {}
+      for tr in asiento.getAsientos():
+        cid   = int(tr['cuenta_id'])
+        monto = float(tr['monto'])
+        haber = bool(tr['haber'])
+        
+        if cid not in cuentas.keys():
+          raise Exception('error con la cuenta' + tr['cuenta'] + ' "id:' + str(cid) + '". No recibe saldo.')
+        
+        if (cid in cuentas_usadas.keys()) and noDupes:
+          raise Exception('error con la cuenta ' + tr['cuenta'] + '  "id:' + str(cid) + '". Ya se encuentra registrada en otra transaccion.')
+        cuenta = cuentas[cid]
+        cuenta.transaccion(monto,haber)
+        cuentas_usadas[cid] = cuenta
+      return asiento,cuentas_usadas
 
     def nextAsientoId(self,db):
       try:

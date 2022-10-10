@@ -2,6 +2,8 @@
   const tabla = []
   const data = JSON.parse($('#data')[0].innerHTML)
   const csrfToken = document.querySelector("[name='csrf_token']").value
+  const cuentasUsadas = []
+  let cuentasSaldo = []
 
   $('#descripcion').keydown(function (e) {
     // Enter was pressed without shift key
@@ -128,7 +130,15 @@
 
   function cargarSeleccion (cuentas) {
     const cuentaSelect = $('#cuenta')[0]
+    cuentaSelect.innerHTML = ''
+    cuentasSaldo = cuentas
     for (const elem of cuentas) {
+      console.log(cuentasUsadas)
+      console.log(elem.cid)
+      if (cuentasUsadas.includes(elem.cid)) {
+        console.log(elem)
+        continue
+      }
       const option = document.createElement('option')
       option.text = elem.text
       option.setAttribute('cid', elem.cid)
@@ -179,8 +189,10 @@
     row.insertCell(2).innerHTML = ((haber) ? '-' : '$ ' + valor)
     // Cell 4
     row.insertCell(3).innerHTML = ((haber) ? '$ ' + valor : '-')
+
     // Cell 5
-    row.insertCell(4).innerHTML = '<button id="editarAsiento" rowid=' + id + ' class="btn btn-block btn-dark btnEditarLibro st-btn">Editar</button>'
+    // row.insertCell(4).innerHTML = '<button id="editarAsiento" rowid=' + id + ' class="btn btn-block btn-dark btnEditarLibro st-btn">Editar</button>'
+    row.insertCell(4).innerHTML = ''
     row.insertCell(5).innerHTML = '<button id="eliminarAsiento" rowid=' + id + ' class="btn btn-block btn-dark btnEliminarLibro st-btn">Eliminar</button>'
   }
 
@@ -201,7 +213,7 @@
 
   /* CHEQUEO DE QUE HAYA INGRESADO UN MONTO */
   function getMonto () {
-    const v = parseInt($('#monto')[0].value)
+    const v = parseFloat($('#monto')[0].value)
     if (v > 0) {
       return v
     } else {
@@ -215,7 +227,7 @@
   function getCuenta () {
     const cuenta = $('#cuenta')[0]
     const selection = cuenta.options[cuenta.selectedIndex]
-    return { nombre: selection.text, cuenta_id: selection.getAttribute('cid') }
+    return { nombre: selection.text, cuenta_id: parseInt(selection.getAttribute('cid')) }
   }
 
   /* AL APRETAR AGREGAR */
@@ -224,12 +236,16 @@
     const row = table.insertRow(-1)
     const cuenta = getCuenta()
     generarRow(row, asientoActual, cuenta.nombre, getMonto(), getHaber())
-    tabla[asientoActual] = {
+    tabla[asientoActual] = { // Estructura que se envia al serivdor
       monto: getMonto(),
       haber: getHaber(),
       cuenta: cuenta.nombre,
       cuenta_id: cuenta.cuenta_id
     }
+
+    cuentasUsadas.push(cuenta.cuenta_id)
+    cargarSeleccion(cuentasSaldo)
+
     if (getHaber()) {
       haber += getMonto()
       $('#totalHaber')[0].innerHTML = '$ ' + haber
@@ -237,8 +253,7 @@
       debe += getMonto()
       $('#totalDebe')[0].innerHTML = '$ ' + debe
     }
-    $('#totalDiferencia')[0].innerHTML = Math.abs(debe - haber)
-    console.log(tabla)
+    // $('#totalDiferencia')[0].innerHTML = Math.abs(debe - haber)
     // por ultimo
     asientoActual += 1
   })

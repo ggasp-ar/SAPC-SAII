@@ -78,6 +78,7 @@ def ver_asiento():
 @login_required
 def registrar_asiento():
     MA = ModeloAsiento()
+    MC = ModeloCuenta()
     if request.method == 'GET':
         if not(current_user.is_authenticated):
             return redirect(url_for('login'))
@@ -92,24 +93,28 @@ def registrar_asiento():
         except Exception as e:
             return render_template('errores/error.html')
     else:
-        data = request.get_json()
-        asiento = MA.crearAsiento(data)
-        #MA.verificarAsiento(asiento) if true: 
-        MA.cargarAsiento(db, asiento)
         try:
+            data = request.get_json()
+            asiento, cuentas_modificadas = MA.verificarAsiento(MA.crearAsiento(data),
+                                                            MC.obtenerCuentasSaldo(db, False))
+            debugPrint(cuentas_modificadas, "registrar asiento POST")
+            #MA.cargarAsiento(db, asiento)
+            #MC.actualizarCuentas(db, cuentas_modificadas)
             return jsonify({'exito':True,'mensaje':'Asiento Cargado'})
-        except:
-            return jsonify({'exito':False,'mensaje':'Fallo la carga de asientos'})
+        except Exception as e:
+            return jsonify({'exito':False,'mensaje':('Fallo la carga de asientos: ' + str(e))})
         
 
 @app.route('/cuentas', methods=['GET', 'POST'])
 @login_required
 def ver_cuentas():
-    familia_cuentas=ModeloCuenta().generarArbol(db)
+    mc=ModeloCuenta()
     if request.method == 'POST':
-        return jsonify(ModeloCuenta().obtenerCuentasSaldo(db))
+        cuentas = mc.obtenerCuentasSaldo(db)
+        dict_cuentas = mc.obtenerDict(cuentas,True)
+        return jsonify(dict_cuentas)
     else:
-        return render_template('cuentas/cuentas.html',data=familia_cuentas)
+        return render_template('cuentas/cuentas.html',data=mc.generarArbol(db))
 
 @app.route('/crearusuario', methods=['GET', 'POST'])
 def crearusuario():
