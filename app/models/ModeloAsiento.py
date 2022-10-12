@@ -39,8 +39,6 @@ class ModeloAsiento():
         values = (aid, int(tr['cuenta_id']), i, tr['monto'], 0, int(tr['haber']))
         cursor.execute(sql,values)
         i = i+1
-      
-      db.connection.commit()
 
     @classmethod
     def verificarAsiento(self, asiento, cuentas, noDupes=True):

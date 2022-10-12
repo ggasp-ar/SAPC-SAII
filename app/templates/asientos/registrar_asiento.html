@@ -15,13 +15,18 @@
     </div>
     <div class="input-group">
       <span class="input-group-text" id="inputGroupPrepend">$</span>
-      <input placeholder="Monto" class="form-control col-sm-7" type="numeric" id="monto" name="monto" min="0" oninput="validity.valid||(value='');" required>
+      <input placeholder="Monto" class="form-control col-sm-7" type="number" id="monto" name="monto" min="0" oninput="validity.valid||(value='');" required>
     </div>
   </div>
   <div class="col-sm-4">
-    <label for="cuenta">Elegir Cuenta</label>
-    <select name="cuenta" class="form-control" id="cuenta">
-    </select> 
+    <div class="row">
+      <label for="cuenta">Elegir Cuenta</label>
+    </div>
+    <div class="row input-group">
+      <select name="cuenta" class="form-control col-sm-10" id="cuenta"></select> 
+      <button type="button" name="refresh" class="form-control col-sm-2" id="refresh"><i class="fa fa-refresh"></i></button>
+      <button type="button" class="form-control col-sm-2" id="addAccBtn"><i class="fa fa-plus"></i></button>
+    </div>
   </div>
   <div class="col-sm-2" >
     <button type="button" class="btn btn-primary" style="position: relative;top: 50%;left: 25%;" id="addAsiento" name="addAsiento" >Agregar</button>

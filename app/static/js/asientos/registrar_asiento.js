@@ -3,7 +3,32 @@
   const data = JSON.parse($('#data')[0].innerHTML)
   const csrfToken = document.querySelector("[name='csrf_token']").value
   const cuentasUsadas = []
+
+  const checkDebe = $('#checkDebe')
+  const checkHaber = $('#checkHaber')
+
   let cuentasSaldo = []
+
+  let asientoActual = 0
+  let debe = 0
+  let haber = 0
+
+  const dp = document.getElementById('datePicker')
+  const today = new Date()
+  dp.value = today.toISOString().slice(0, 16)
+
+  const btnFinalizarAsiento = document.querySelector('button[id="finalizar"]')
+
+  const cuentaSelect = $('#cuenta')[0]
+  const refreshBtn = $('#refresh')[0]
+  const addCuentaBtn = $('#addAccBtn')[0]
+
+  refreshBtn.addEventListener('click', () => {
+    recargarCuentas()
+  })
+  addCuentaBtn.addEventListener('click', () => {
+    window.open('/cuentas', '_blank')
+  })
 
   $('#descripcion').keydown(function (e) {
     // Enter was pressed without shift key
@@ -17,48 +42,6 @@
     return 'Si recarga se perdera la informacion del asiento'
   }
 
-  const dp = document.getElementById('datePicker')
-  const today = new Date()
-  /*
-    let dd = today.getDate()
-    let mm = today.getMonth() + 1 // January is 0 so need to add 1 to make it 1!
-    const yyyy = today.getFullYear()
-    if (dd < 10) {
-      dd = '0' + dd
-    }
-    if (mm < 10) {
-      mm = '0' + mm
-    }
-    today = yyyy + '-' + mm + '-' + dd
-    console.log(today)
-    // tomorrow = yyyy+'-'+mm+'-'+(dd+1);
-    // dp.value = today
-  */
-  dp.value = today.toISOString().slice(0, 16)
-
-  /*
-  function getTablaInfo () {
-    const mitabla = []
-    $('#main-table tr').each(function (i, row) {
-      const $row = $(row)
-      const nroLista = $row.find('td:nth-child(1)').text()
-      const cuentaId = $row.find('td:nth-child(1)').attr('cuenta-id')
-      const cuenta = $row.find('td:nth-child(2)').text()
-      let tipo = 0
-      const debe = $row.find('td:nth-child(3)').text()
-      const haber = $row.find('td:nth-child(4)').text()
-      let valor = debe
-      if (debe.includes('-')) {
-        tipo = 1
-        valor = haber
-      }
-
-      mitabla.push([nroLista, cuentaId, cuenta, valor, tipo])
-    })
-    return mitabla
-  } */
-
-  const btnFinalizarAsiento = document.querySelector('button[id="finalizar"]')
   btnFinalizarAsiento.innerHTML = 'Finalizar Asiento'
   btnFinalizarAsiento.addEventListener('click', function () {
     if ((debe - haber) !== 0) {
@@ -129,7 +112,6 @@
   }
 
   function cargarSeleccion (cuentas = []) {
-    const cuentaSelect = $('#cuenta')[0]
     cuentaSelect.innerHTML = ''
     if (cuentas.length === 0) {
       cuentas = cuentasSaldo
@@ -144,9 +126,35 @@
       const option = document.createElement('option')
       option.text = elem.text
       option.setAttribute('cid', elem.cid)
+      option.setAttribute('tipo', elem.tipo.tipo)
       cuentaSelect.add(option)
     }
   }
+
+  function bloquearDH () {
+    checkDebe.prop('disabled', true)
+    checkHaber.prop('disabled', true)
+  }
+
+  function desbloquearDH () {
+    checkDebe.prop('disabled', false)
+    checkHaber.prop('disabled', false)
+  }
+
+  cuentaSelect.addEventListener('change', () => {
+    const cuenta = getCuenta()
+    if (cuenta.cuenta_tipo === 'R-') {
+      bloquearDH()
+      setRadio(checkHaber, false)
+      setRadio(checkDebe, true)
+    } else if (cuenta.cuenta_tipo === 'R+') {
+      bloquearDH()
+      setRadio(checkHaber, true)
+      setRadio(checkDebe, false)
+    } else {
+      desbloquearDH()
+    }
+  })
 
   function recargarCuentas () {
     fetch(`${window.origin}/cuentas`, {
@@ -169,11 +177,6 @@
       notificacionSwal('¡Error!', error, 'error', 'Cerrar')
     })
   }
-
-  let asientoActual = 0
-  let debe = 0
-  let haber = 0
-
   recargarCuentas()
   /* Funcion utilizada para eliminar filas */
 
@@ -225,14 +228,17 @@
   }
 
   /* CHEQUEO DE SI ES POR EL DEBE O POR EL HABER */
-  function getRadio (id) {
-    return $(id).prop('checked')
+  function getRadio (radio) {
+    return radio.prop('checked')
+  }
+  function setRadio (radio, bool) {
+    return radio.prop('checked', bool)
   }
 
   function getHaber () {
-    if (getRadio('#checkDebe')) {
+    if (getRadio(checkDebe)) {
       return false
-    } else if (getRadio('#checkHaber')) {
+    } else if (getRadio(checkHaber)) {
       return true
     } else {
       throw new Error('error al elegir debe/haber')
@@ -253,9 +259,12 @@
   /* OBTENER CUENTA SELECCIONADA */
 
   function getCuenta () {
-    const cuenta = $('#cuenta')[0]
-    const selection = cuenta.options[cuenta.selectedIndex]
-    return { nombre: selection.text, cuenta_id: parseInt(selection.getAttribute('cid')) }
+    const selection = cuentaSelect.options[cuentaSelect.selectedIndex]
+    return {
+      nombre: selection.text,
+      cuenta_id: parseInt(selection.getAttribute('cid')),
+      cuenta_tipo: selection.getAttribute('tipo')
+    }
   }
 
   /* AL APRETAR AGREGAR */

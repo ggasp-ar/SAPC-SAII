@@ -22,7 +22,7 @@ class ModeloCuenta():
                     tipo = self.Tipos[data["tipo_id"]],
                     padreid = data["cuenta_padre_id"])
         return acc
-
+    
     @classmethod
     def obtenerPor(self,db,campo,valor, byCodigo):
         self.cargarTipos(db)
@@ -127,9 +127,38 @@ class ModeloCuenta():
                 accs.append(self.cuentaToDict(cuentas[c]))
         return accs
 
+    @classmethod
+    def actualizarCuenta(self, db, cuenta):
+        cursor = db.connection.cursor()
+        cursor.execute("UPDATE cuentas SET saldo_actual = %s WHERE cuenta_id = %s;",
+            (cuenta.getSaldo(),cuenta.getId()))
     
     @classmethod
-    def actualizarCuentas(self,cuentas):
-        #for c in cuentas:
-            #actualizar
+    def actualizarCuentas(self, db, cuentas):
+        for c in cuentas:
+            self.actualizarCuenta(db, cuentas[c])
         return True
+    
+    @classmethod
+    def verificarCuenta(self,cuenta):
+        #cuenta.getNombre()
+        return True
+
+    @classmethod
+    def cargarNuevaCuenta(self, db, cuenta):
+        if(self.verificarCuenta(cuenta)):
+            cursor = db.connection.cursor()
+            pid = cuenta.getPadreId()
+            padre = self.obtenerPor(db, 'cuenta_id', pid, False)[pid]
+            print(padre)
+            cursor.execute("INSERT INTO cuentas (cuenta, cuenta_padre_id, codigo, tipo_id, recibe_saldo) VALUES (%s, %s, %s, %s, %s)",
+            (cuenta.getNombre(),
+            padre.getCodigo(),
+            cuenta.getCodigo(),
+            padre.getTipo().getTipoId(),
+            cuenta.getRecibe()))
+            db.connection.commit()
+
+
+
+

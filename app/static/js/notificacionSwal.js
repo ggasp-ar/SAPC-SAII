@@ -17,7 +17,6 @@ const notifSwalReset = (titleText, maintext, notifIcon, confirmText) => {
     confirmButtonColor: '#8fce00',
     backdrop: 'rgba(0,60,0,0.7)'
   }).then(() => {
-    document.forms.mainform.reset()
     window.onbeforeunload = null
     window.location.reload()
   })

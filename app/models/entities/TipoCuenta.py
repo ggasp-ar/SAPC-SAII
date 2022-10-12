@@ -9,6 +9,9 @@ class TipoCuenta():
         self.tipo = tipo
         self.descripcion = descripcion
 
+    def getTipoId(self):
+        return self.id
+    
     def getTipo(self):
         return self.tipo
 

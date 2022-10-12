@@ -19,3 +19,10 @@ div[class="container py-3"]{
   border-style:groove;
   border-width: 0.1rem;
 }
+
+div[class="form-border"]{
+  background-color: #DDDDDD ;
+  border-radius: 1rem;
+  border-style:groove;
+  border-width: 0.1rem;
+}

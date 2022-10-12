@@ -6,6 +6,8 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from app.models.ModeloAsiento import ModeloAsiento
 
 from app.models.ModeloCuenta import ModeloCuenta
+from app.models.ModeloTipoCuenta import ModeloTipoCuenta
+from app.models.entities.Cuenta import Cuenta
 
 from .models.ModeloUsuario import ModeloUsuario
 from .models.entities.Usuario import Usuario
@@ -101,8 +103,10 @@ def registrar_asiento():
             debugPrint(cuentas_modificadas, "registrar asiento POST")
             debugPrint(asiento, "registrar asiento POST")
             
-            #MA.cargarAsiento(db, asiento)
-            #MC.actualizarCuentas(db, cuentas_modificadas)
+            MA.cargarAsiento(db, asiento)
+            MC.actualizarCuentas(db, cuentas_modificadas)
+            db.connection.commit()
+            
             return jsonify({'exito':True,'mensaje':'Asiento Cargado'})
         except Exception as e:
             return jsonify({'exito':False,'mensaje':('Fallo la carga de asientos: ' + str(e))})
@@ -118,6 +122,27 @@ def ver_cuentas():
         return jsonify(dict_cuentas)
     else:
         return render_template('cuentas/cuentas.html',data=mc.generarArbol(db))
+
+@app.route('/registrarcuenta', methods=['POST'])
+@login_required
+def registrar_cuenta():
+    MC = ModeloCuenta()
+    MTC = ModeloTipoCuenta()
+    try:
+        data = request.get_json()
+        nuevaCuenta = Cuenta(id= None,
+                            codigo= data['codigo'],
+                            nombre= data['cuenta'],
+                            saldo= 0,
+                            tipo= MTC.obtenerTipo(db,data['tipo']),
+                            recibe= data['recibe'],
+                            padreid= data['padre_cid']
+                            )
+        debugPrint(nuevaCuenta, "nueva cuenta creada")
+        MC.cargarNuevaCuenta(db, nuevaCuenta)
+        return jsonify({'exito':True,'mensaje':'Cuenta Creada'})
+    except Exception as e:
+        return jsonify({'exito':False,'mensaje':('Fallo la creacion de la nueva cuenta: ' + str(e))})
 
 @app.route('/crearusuario', methods=['GET', 'POST'])
 def crearusuario():

@@ -10,23 +10,47 @@
 
 {% block container %} 
 <div class="row">
-    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+    <div class="col-sm-5">
         <div id="tree"></div>
     </div>
-    <div class="col-sm-7 infotab">
+    <div class="col-sm-7 infotab" style="padding: 20px">
         <div style="text-align: center;">
             <h1 id="codigo-cuenta"></h1>
             <h1 id="nombre-cuenta">Seleccione una Cuenta</h1>
             <div id="inforow" style="visibility: hidden;">
                 <div class="row">
-                    <div class="col-sm">
-                        <label for="saldo-cuenta">Saldo </label>
-                        <input placeholder="Saldo" class="form-control input-sm" type="numeric" id="saldo-cuenta" name="saldo-cuenta" disabled>
+                    <div class="input-group col-sm">
+                        <span class="input-group-text" id="inputGroupPrepend">$</span>
+                        <input placeholder="Saldo" class="form-control" type="numeric" id="saldo-cuenta" name="saldo-cuenta" disabled>
                     </div>
                     <div id="tipo-cuenta" class="col-sm"></div>
                 </div>
                 <div class="row" style="padding-top: 20px">
-                    <button class="form-control" id="addacc" text="asd" disabled>Agregar Cuenta Hijo</button>
+                    <button class="form-control" id="addaccmenu" text="asd" disabled>Agregar Cuenta Hijo</button>
+                </div>
+                <br>
+                <div id="addaccform" class="form-border" >
+                    <form id="accform" class="form-signin  m-auto">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="row" style="padding-inline: 20px; padding-top: 10px;">
+                            <div class="form-floating col-sm-8">
+                                <label for="Cuenta">Nombre</label>
+                                <input type="text" class="form-control" id="Cuenta" name="Cuenta" placeholder="Cuenta" required autofocus>
+                            </div>
+                            <div class="form-floating col-sm-4">
+                                <label for="Codigo">Codigo</label>
+                                <input type="number" class="form-control" id="Codigo" name="Codigo" placeholder="Codigo"
+                                required oninput="validity.valid||(value='');">
+                            </div>
+                        </div>  
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="recibeSaldo" id="recibeSaldo">
+                            <label class="form-check-label" for="recibeSaldo">Recibe Saldo</label>
+                        </div>
+                    </form>
+                    <div class="row" style="padding-inline: 30px; padding-bottom: 10px;">
+                        <button class="form-control" id="addacc" text="asd">Agregar</button>
+                    </div>            
                 </div>
             </div>
         </div>
@@ -36,7 +60,9 @@
 {% endblock %}
 
 {% block customJS %}
+<script src="{{ url_for('static', filename='lib/sweetalert2-9.10.0/sweetalert2.all.min.js') }}"></script>
 <script src="{{ url_for('static', filename='lib/bootstrap-treeview/js/bootstrap-treeview.js') }}"></script>
+<script src="{{ url_for('static', filename='js/notificacionSwal.js') }}"></script>
 <script src="{{ url_for('static', filename='js/mostrarcuentas.js') }}"></script>
 {% endblock %}
 
