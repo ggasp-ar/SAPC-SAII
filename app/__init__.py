@@ -59,18 +59,22 @@ def index():
 @app.route('/verasiento')
 @login_required
 def ver_asiento():
+    args = request.args
+    MA = ModeloAsiento()
+    MU = ModeloUsuario()
     if not(current_user.is_authenticated):
         return redirect(url_for('login'))
     try:
-        #aca iria la logica de traer el asiento (id) desde la DB
-        asientos = [["Caja",15000,0],
-                    ["Proveedores",42000,1]]
+        asiento = MA.obtenerAsiento(db, args.get("asiento_id"))
+        fecha = asiento.getFecha().replace(' ', 'T').rsplit(':',1)[0]
+        responsable = MU.obtener_por_id(db, asiento.getResponsable())
         data = {
-            'titulo': 'Asiento',
-            'id': '1234',
-            'responsable': 'indef',
-            'responsableid': 'indef',
-            'asientos': asientos
+            'titulo': asiento.getDesc(),
+            'id': asiento.getId(),
+            'fecha': fecha,
+            'responsable': responsable.nombre,
+            'responsableid': asiento.getResponsable(),
+            'asientos': asiento.getAsientos()
         }
         return render_template('asientos/ver_asiento.html', data=data)
     except Exception as e:

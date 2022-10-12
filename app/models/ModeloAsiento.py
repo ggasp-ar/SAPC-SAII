@@ -3,7 +3,8 @@
 from datetime import date
 from xml.etree.ElementTree import tostring
 from app.models.entities.Asiento import Asiento
-from app.utils import debugPrint, fetchOne
+from app.models.entities.Cuenta import Cuenta
+from app.utils import debugPrint, fetchAll, fetchOne
 
 
 class ModeloAsiento():
@@ -64,3 +65,38 @@ class ModeloAsiento():
         return (id + 1)
       except:
         return (0)
+
+    @classmethod
+    def generarAsiento(self, data, transacciones_raw):
+      transacciones=[]
+      for t in transacciones_raw:
+        transacciones.append([
+          t['cuenta'],t['valor'],t['haber']
+        ])
+      a = Asiento(id = data['asiento_id'], 
+                  fecha = str(data['fecha']).replace(' ','T'), 
+                  desc = data['descripcion'], 
+                  usuario_id = data['usuario_id'],
+                  asientos = transacciones)
+      return a
+
+    @classmethod
+    def obtenerAsiento(self, db, id):
+        try:
+            sql = """SELECT *
+                    FROM ASIENTOS a
+                    WHERE a.asiento_id = {0} """.format(id) 
+            sql_ac = """SELECT *
+                    FROM asientos_cuentas a INNER JOIN cuentas c ON (a.cuenta_id = c.cuenta_id)
+                    WHERE a.asiento_id = {0} """.format(id)        
+            data = fetchOne(db, sql)
+            data_tr = fetchAll(db, sql_ac)
+            if data != None:
+              debugPrint(data, "obtenerAsiento")
+              debugPrint(data_tr, "obtenerAsiento")
+              asiento = self.generarAsiento(data, data_tr)
+            else:
+              asiento = None
+            return asiento
+        except Exception as ex:
+            raise Exception(ex)

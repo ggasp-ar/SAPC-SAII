@@ -10,7 +10,7 @@
 {% block container %} 
 <div class="row">
     <div class="col-sm col-md col-lg col-xl">
-        <div style="text-align: center;">{{data.titulo}}#{{data.id}}</div>
+        <div style="text-align: center;">Asiento#{{data.id}}</div>
     </div>
 </div>
 <hr/>
@@ -18,13 +18,13 @@
     <div class="row">
         <div class="col-sm-6"> 
             <label for="descripcion">Descripción</label>
-            <input class="form-control input-lg" placeholder="Descripcion del Asiento" id="descripcion" type=text></textarea>
+            <input class="form-control input-lg" placeholder="Descripcion del Asiento" id="descripcion" type=text value='{{data.titulo}}'></textarea>
         </div>
         <div class="col-sm-6"> 
             <div class="row">
                 <div class="col-sm-5">
                     <label for="datePicker">Fecha</label>
-                    <input type="datetime-local" class="form-control" id="datePicker" disabled></h4>
+                    <input type="datetime-local" class="form-control" id="datePicker" value='{{data.fecha}}' disabled></h4>
                 </div>
                 <div class="col-sm-7"> 
                     <label for="descripcion">Responsable</label>
