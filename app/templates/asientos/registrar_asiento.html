@@ -2,36 +2,36 @@
 
 {% block registro %}
 <hr/>
+<form id="formcuenta">
 <div class="row">
-  <div class="col-sm-6">
-    <label for="monto" style="padding-right: 25px;">Monto</label>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="checkDH" id="checkDebe" checked>
-      <label class="form-check-label" for="checkDebe">Debe</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="checkDH" id="checkHaber">
-        <label class="form-check-label" for="checkHaber">Haber</label>
-    </div>
-    <div class="input-group">
-      <span class="input-group-text" id="inputGroupPrepend">$</span>
-      <input placeholder="Monto" class="form-control col-sm-7" type="number" id="monto" name="monto" min="0" oninput="validity.valid||(value='');" required>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="row">
+    <div class="col-sm-6">
       <label for="cuenta">Elegir Cuenta</label>
+      <div class="input-group">
+        <select name="cuenta" class="form-control col-sm-10" id="cuenta"></select> 
+        <button type="button" name="refresh" class="form-control col-sm-2" id="refresh"><i class="fa fa-refresh"></i></button>
+        <button type="button" class="form-control col-sm-2" id="addAccBtn"><i class="fa fa-plus"></i></button>
+      </div>
     </div>
-    <div class="row input-group">
-      <select name="cuenta" class="form-control col-sm-10" id="cuenta"></select> 
-      <button type="button" name="refresh" class="form-control col-sm-2" id="refresh"><i class="fa fa-refresh"></i></button>
-      <button type="button" class="form-control col-sm-2" id="addAccBtn"><i class="fa fa-plus"></i></button>
+    <div class="col-sm-4">
+      <label for="monto" style="padding-right: 25px;">Monto</label>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="checkDH" id="checkDebe" checked>
+        <label class="form-check-label" for="checkDebe">Debe</label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="checkDH" id="checkHaber">
+          <label class="form-check-label" for="checkHaber">Haber</label>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text" id="inputGroupPrepend">$</span>
+        <input placeholder="Monto" class="form-control col-sm-7" type="number" id="monto" name="monto" min="0" oninput="validity.valid||(value='');" required>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-2" >
-    <button type="button" class="btn btn-primary" style="position: relative;top: 50%;left: 25%;" id="addAsiento" name="addAsiento" >Agregar</button>
-  </div>
+    <div class="col-sm-2" >
+      <button type="button" class="btn btn-primary" style="position: relative;top: 50%;left: 25%;" id="addAsiento" name="addAsiento" >Agregar</button>
+    </div>
 </div>
+</form>
 {% endblock %}
 
 
@@ -68,7 +68,7 @@
     </tr>
     {% endfor %}
   </tbody>
-  <tfoot>
+  <tfoot style="border-top: 2px">
     <tr>
         <td colspan="2"></td>
         <td id="totalDebe">$ {{ contador.totalDebe }}</td>

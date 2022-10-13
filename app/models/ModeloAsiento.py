@@ -44,6 +44,9 @@ class ModeloAsiento():
     @classmethod
     def verificarAsiento(self, asiento, cuentas, noDupes=True):
       cuentas_usadas = {}
+      asientos = asiento.getAsientos()
+      if len(asientos) <2:
+        raise Exception('Asiento Invalido')
       for tr in asiento.getAsientos():
         cid   = int(tr['cuenta_id'])
         monto = float(tr['monto'])

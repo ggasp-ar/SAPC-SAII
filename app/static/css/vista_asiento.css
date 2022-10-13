@@ -10,6 +10,8 @@ body{
 table {
     table-layout:fixed;
     width:100%;
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
 }
 
 div[class="container py-3"]{
@@ -26,6 +28,7 @@ th,td{
 }
 
 td{
+  border: 1px solid rgb(190, 190, 190);
   font-size:large;
   overflow: hidden;
   white-space:nowrap;

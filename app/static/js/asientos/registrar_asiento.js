@@ -6,7 +6,7 @@
 
   const checkDebe = $('#checkDebe')
   const checkHaber = $('#checkHaber')
-
+  const formCuenta = document.forms.formcuenta
   let cuentasSaldo = []
 
   let asientoActual = 0
@@ -55,6 +55,10 @@
     const descripcion = $('#descripcion')[0].value
     if (descripcion === '') {
       Swal.fire('La descripcion esta vacia.')
+      return
+    }
+    if (debe <= 0) {
+      Swal.fire('El asiento esta en 0.')
       return
     }
     confirmarAsiento()
@@ -220,7 +224,7 @@
     row.insertCell(4).innerHTML = ''
 
     const delBtn = document.createElement('button')
-    delBtn.onclick = () => { eliminarAsiento(delBtn, id) }
+    delBtn.onclick = () => { eliminarAsiento(delBtn, id); formCuenta.reset() }
     delBtn.innerHTML = 'Eliminar'
     delBtn.className = 'btn btn-block btn-dark btnEliminarLibro st-btn'
     delBtn.setAttribute('rowid', id)
@@ -293,5 +297,6 @@
     // $('#totalDiferencia')[0].innerHTML = Math.abs(debe - haber)
     // por ultimo
     asientoActual += 1
+    formCuenta.reset()
   })
 })()
