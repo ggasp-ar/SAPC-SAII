@@ -1,3 +1,4 @@
+from flask import Flask, flash, render_template
 from .entities.Usuario import Usuario
 from .entities.TipoUsuario import TipoUsuario
 from ..utils import fetchOne
@@ -15,7 +16,7 @@ class ModeloUsuario():
                 return None
 
         except Exception as ex:
-            raise Exception(ex)
+            print(ex)
 
     @classmethod
     def crear_usuario(self,db,nuevoUsuario):
@@ -59,4 +60,4 @@ class ModeloUsuario():
                                     password=None)
             return usuario_logeado
         except Exception as ex:
-            raise Exception(ex)
+            print(ex)

@@ -33,10 +33,14 @@ def login():
                             usr=request.form['usuario'],
                             pwd=request.form['password'])
         if usuario_id != None:
-            usuario = ModeloUsuario.obtener_por_id(db,usuario_id)
-            login_user(usuario)
-            flash('Bienvenido {}'.format(usuario.nombre), 'success')
-            return redirect(url_for('index'))
+            try:
+                usuario = ModeloUsuario.obtener_por_id(db,usuario_id)
+                login_user(usuario)
+                flash('Bienvenido {}'.format(usuario.nombre), 'success')
+                return redirect(url_for('index'))
+            except:
+                flash('Por favor, verifique sus datos','warning')
+                return render_template('auth/login.html')
         else:
             flash(LOGIN_CREDENCIALESINVALIDAS,'warning')
             return render_template('auth/login.html')
