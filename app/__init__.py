@@ -146,8 +146,9 @@ def registrar_cuenta():
                             recibe= data['recibe'],
                             padreid= data['padre_cid']
                             )
+        print(nuevaCuenta.getPadre().getCodigo())
         debugPrint(nuevaCuenta, "nueva cuenta creada")
-        MC.cargarNuevaCuenta(db, nuevaCuenta)
+        #MC.cargarNuevaCuenta(db, nuevaCuenta)
         return jsonify({'exito':True,'mensaje':'Cuenta Creada'})
     except Exception as e:
         return jsonify({'exito':False,'mensaje':('Fallo la creacion de la nueva cuenta: ' + str(e))})
