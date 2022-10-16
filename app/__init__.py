@@ -139,16 +139,40 @@ def registrar_cuenta():
     try:
         data = request.get_json()
         nuevaCuenta = Cuenta(id= None,
-                            codigo= data['codigo'],
+                            codigo= None,
                             nombre= data['cuenta'],
                             saldo= 0,
                             tipo= MTC.obtenerTipo(db,data['tipo']),
                             recibe= data['recibe'],
                             padreid= data['padre_cid']
                             )
-        print(nuevaCuenta.getPadre().getCodigo())
+        padreDeCuentaCreada = ModeloCuenta().obtenerPor(db, 'cuenta_id', nuevaCuenta.getPadreId(), False)
+        padreDeCuentaCreada = padreDeCuentaCreada[nuevaCuenta.getPadreId()]
+        codigo = padreDeCuentaCreada.getCodigo()      
+        if codigo%1000 == 0:
+            print("padre")
+            for i in range(100,9900,100):
+                print(codigo+i)
+                padreDeCuentaCreada = ModeloCuenta().obtenerPor(db, 'codigo', codigo+i, False)
+                print(padreDeCuentaCreada)
+                if padreDeCuentaCreada == {}:
+                    nuevaCuenta.setCodigo(codigo+i)
+                    break
+        else:
+            if codigo%100 == 0:
+                print("hijo")
+                for i in range(1,99):
+                    print(codigo+i)
+                    padreDeCuentaCreada = ModeloCuenta().obtenerPor(db, 'codigo', codigo+i, False)
+                    print(padreDeCuentaCreada)
+                    if padreDeCuentaCreada == {}:
+                        nuevaCuenta.setCodigo(codigo+i)
+                        break
+            else:
+                print("nieto")
         debugPrint(nuevaCuenta, "nueva cuenta creada")
-        #MC.cargarNuevaCuenta(db, nuevaCuenta)
+        print(nuevaCuenta)
+        MC.cargarNuevaCuenta(db, nuevaCuenta)
         return jsonify({'exito':True,'mensaje':'Cuenta Creada'})
     except Exception as e:
         return jsonify({'exito':False,'mensaje':('Fallo la creacion de la nueva cuenta: ' + str(e))})

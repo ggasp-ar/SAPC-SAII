@@ -38,6 +38,9 @@ class Cuenta():
     
     def getSaldo(self):
         return self.saldo
+
+    def setCodigo(self, codigo):
+        self.codigo = codigo
     
     def setSaldo(self,nuevoSaldo):
         self.saldo = nuevoSaldo
