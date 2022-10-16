@@ -60,6 +60,30 @@ def index():
         return redirect(url_for('login'))
     return render_template('index.html')
 
+@app.route('/verasientos', methods=['GET', 'POST'])
+@login_required
+def ver_asientos():
+    if request.method == 'GET':        
+        data = {'titulo':'Asientos Registrados'}
+        return render_template('libros/ver_asientos.html', data=data)
+    else:
+        data = request.get_json()
+        MA = ModeloAsiento()
+        asientos = MA.listarAsientos(
+            db,
+            data['fechaDesde'],
+            data['fechaHasta'],
+            "ASC")
+        asientosdict = {}
+        for a in asientos:
+            asientosdict[a.getId()] = {
+                'id': a.getId(),
+                'descripcion': a.getDesc(),
+                'fecha': a.getFecha()
+            }
+        return jsonify(asientosdict)
+
+    
 @app.route('/verasiento')
 @login_required
 def ver_asiento():

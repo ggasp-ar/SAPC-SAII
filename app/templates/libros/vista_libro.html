@@ -1,0 +1,46 @@
+{% extends './body.html' %}
+
+{% block title %}Index{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vista_asiento.css') }}">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block container %} 
+<div class="row">
+    <div class="col-sm col-md col-lg col-xl">
+        <div style="text-align: center;">{{data.titulo}}</div>
+    </div>
+</div>
+<hr/>
+<form id="mainform">
+    <div class="row">
+        <div class="col"> 
+            <div class="row">
+                <div class="col">
+                    <label for="datePicker">Desde</label>
+                    <input type="date" class="form-control" id="dateDesde"></h4>
+                </div>
+                <div class="col"> 
+                  <label for="datePicker">Hasta</label>
+                  <input type="date" class="form-control" id="dateHasta"></h4>
+              </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% block info %}
+{% endblock %}
+<hr/>
+<div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="table-responsive">
+                <table class="table table-striped" id="tabla-asientos" style="display:none;">
+                    {% block tabla %}
+                    {% endblock %}
+                </table>
+            </div>
+        </div>
+</div>
+{% endblock %}

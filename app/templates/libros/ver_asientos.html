@@ -1,0 +1,27 @@
+{% extends './libros/vista_libro.html' %}
+
+{% block info %}
+<div class="row">
+  <div class="col">
+    <button type="button" class="btn btn-primary form-control " id="realizarbusqueda" name="finalizar">Ver</button>
+  </div> 
+</div>
+{% endblock %}
+
+{% block tabla %}
+  <thead>
+    <tr>
+        <th>ID</th>
+        <th class="w-50" style="text-align:left">Descripcion</th>
+        <th>Fecha</th>
+        <th></th>
+    </tr>
+  </thead>
+  <tbody id="main-table"></tbody>
+{% endblock %}
+
+{% block customJS %}
+<script src="{{ url_for('static', filename='lib/sweetalert2-9.10.0/sweetalert2.all.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/notificacionSwal.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libros/ver_asientos.js') }}"></script>
+{% endblock %}

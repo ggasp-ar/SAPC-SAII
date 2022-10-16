@@ -11,7 +11,6 @@ class ModeloAsiento():
 
     @classmethod
     def crearAsiento(self, raw_asiento):
-      print(raw_asiento)
       transacciones=[]
       a = raw_asiento['asientos']
       for t in a:
@@ -104,3 +103,28 @@ class ModeloAsiento():
             return asiento
         except Exception as ex:
             raise Exception(ex)
+    
+    @classmethod
+    def listarAsientos(self, db, desde, hasta, orden):
+        try:
+            sql = """SELECT *
+                    FROM ASIENTOS a
+                    WHERE a.fecha >= '{0}' AND a.fecha <= '{1} 23:59:59' """.format(desde, hasta) 
+            data = fetchAll(db, sql)
+            asientos = []
+            if data != None:
+              for a in data:
+                asientos.append(
+                  Asiento(
+                    id = a['asiento_id'], 
+                    fecha = str(a['fecha']).replace(' ','T'), 
+                    desc = a['descripcion'], 
+                    usuario_id = a['usuario_id'],
+                    asientos = [])
+                )
+            else:
+              asientos = None
+            return asientos
+        except Exception as ex:
+            raise Exception(ex)
+            
