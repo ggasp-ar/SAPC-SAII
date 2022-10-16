@@ -14,8 +14,9 @@
   let haber = 0
 
   const dp = document.getElementById('datePicker')
-  const today = new Date()
-  dp.value = today.toISOString().slice(0, 16)
+  const tzoffset = (new Date()).getTimezoneOffset() * 60000
+  const localISOTime = (new Date(Date.now() - tzoffset))
+  dp.value = localISOTime.toISOString().slice(0, 16)
 
   const btnFinalizarAsiento = document.querySelector('button[id="finalizar"]')
 

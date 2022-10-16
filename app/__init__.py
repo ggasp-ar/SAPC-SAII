@@ -94,7 +94,6 @@ def registrar_asiento():
             return redirect(url_for('login'))
         try:
             data = {
-                'titulo': 'Asiento',
                 'id': MA.nextAsientoId(db),
                 'responsable': current_user.nombre,
                 'responsableid': current_user.id
