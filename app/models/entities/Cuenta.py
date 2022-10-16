@@ -36,11 +36,16 @@ class Cuenta():
     def getPadreId(self):
         return self.padreid
     
-    def getSaldo(self):
-        return self.saldo
-
     def setCodigo(self, codigo):
         self.codigo = codigo
+    
+    def getSaldo(self):
+        saldo = 0
+        if( self.hijos != []):
+            for hijo in self.hijos:
+                saldo = saldo + hijo.getSaldo()
+            return saldo
+        return self.saldo
     
     def setSaldo(self,nuevoSaldo):
         self.saldo = nuevoSaldo

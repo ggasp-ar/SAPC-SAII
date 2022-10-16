@@ -128,15 +128,18 @@ class ModeloCuenta():
         return accs
 
     @classmethod
-    def actualizarCuenta(self, db, cuenta):
+    def actualizarSaldoCuenta(self, db, cuenta):
         cursor = db.connection.cursor()
         cursor.execute("UPDATE cuentas SET saldo_actual = %s WHERE cuenta_id = %s;",
             (cuenta.getSaldo(),cuenta.getId()))
     
     @classmethod
-    def actualizarCuentas(self, db, cuentas):
+    def actualizarSaldoCuentas(self, db, cuentas):
         for c in cuentas:
-            self.actualizarCuenta(db, cuentas[c])
+            cuenta = cuentas[c]
+            if (cuenta.getHijos() != []):
+                self.actualizarSaldoCuentas(db, cuenta.getHijos())
+            self.actualizarSaldoCuenta(db, cuentas[c])
         return True
     
     @classmethod

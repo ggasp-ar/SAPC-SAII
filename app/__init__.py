@@ -112,7 +112,7 @@ def registrar_asiento():
             debugPrint(asiento, "registrar asiento POST")
             
             MA.cargarAsiento(db, asiento)
-            MC.actualizarCuentas(db, cuentas_modificadas)
+            MC.actualizarSaldoCuentas(db, cuentas_modificadas)
             db.connection.commit()
             
             return jsonify({'exito':True,'mensaje':'Asiento Cargado'})
