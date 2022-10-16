@@ -110,7 +110,7 @@ def registrar_asiento():
             debugPrint(cuentas_modificadas, "registrar asiento POST")
             debugPrint(asiento, "registrar asiento POST")
             
-            MA.cargarAsiento(db, asiento)
+            MA.cargarAsiento(db, asiento, cuentas_modificadas)
             MC.actualizarSaldoCuentas(db, cuentas_modificadas)
             db.connection.commit()
             
