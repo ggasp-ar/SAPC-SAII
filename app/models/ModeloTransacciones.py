@@ -24,7 +24,7 @@ class ModeloTransacciones():
             transacciones = {}
             if data != None:
               for a in data:
-                fechaString = a['fecha'].isoformat(sep='T',timespec='auto')
+                fechaString = a['fecha'].isoformat(sep=' ',timespec='auto')
                 transacciones[fechaString]={
                   'Desc': a['descripcion'],
                   'Valor': float(a['valor']),
@@ -50,7 +50,7 @@ class ModeloTransacciones():
             transacciones = {}
             if data != None:
               for a in data:
-                fechaString = a['fecha'].isoformat(sep='T',timespec='auto')
+                fechaString = a['fecha'].isoformat(sep=' ',timespec='auto')
                 try:
                   t = transacciones[fechaString]
                   t.append({

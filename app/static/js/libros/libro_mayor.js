@@ -1,5 +1,5 @@
 (() => {
-  // document.forms.mainform.reset()
+  document.forms.mainform.reset()
   const dateDesde = document.querySelector('input[id="dateDesde"]')
   const dateHasta = document.querySelector('input[id="dateHasta"]')
   const tabla = document.querySelector('table[id="tabla-asientos"]')

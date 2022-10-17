@@ -130,4 +130,16 @@ class ModeloAsiento():
             return asientos
         except Exception as ex:
             raise Exception(ex)
+    
+    @classmethod
+    def inicioActividades(self, db):
+      try:
+        sql = """SELECT MIN(fecha) fecha FROM asientos"""
+        data = fetchOne(db, sql)
+        if data == None:
+          return ''
+        fecha = data['fecha'].isoformat(sep='T',timespec='auto')
+        return fecha.split('T')
+      except Exception as ex:
+          raise Exception(ex)
             

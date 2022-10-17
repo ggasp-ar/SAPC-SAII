@@ -20,11 +20,11 @@
             <div class="row">
                 <div class="col">
                     <label for="datePicker">Desde</label>
-                    <input type="date" class="form-control" id="dateDesde"></h4>
+                    <input type="date" class="form-control" id="dateDesde" min={{data.inicio}} max={{data.hoy}}  value={{data.inicio}} ></h4>
                 </div>
                 <div class="col"> 
                   <label for="datePicker">Hasta</label>
-                  <input type="date" class="form-control" id="dateHasta"></h4>
+                  <input type="date" class="form-control" id="dateHasta" min={{data.inicio}} max={{data.hoy}}  value={{data.inicio}} ></h4>
               </div>
             </div>
         </div>

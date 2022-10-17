@@ -1,3 +1,4 @@
+import datetime
 from distutils.log import debug
 from flask import Flask, flash, redirect, render_template, request, url_for, jsonify
 from flask_mysqldb import MySQL
@@ -65,12 +66,15 @@ def index():
 @login_required
 def ver_asientos():
     if request.method == 'GET':        
-        data = {'titulo':'Asientos Registrados'}
+        data = {
+            'titulo':'Asientos Registrados',
+            'inicio': ModeloAsiento().inicioActividades(db)[0],
+            'hoy': datetime.date.today()
+        }
         return render_template('libros/ver_asientos.html', data=data)
     else:
         data = request.get_json()
-        MA = ModeloAsiento()
-        asientos = MA.listarAsientos(
+        asientos = ModeloAsiento().listarAsientos(
             db,
             data['fechaDesde'],
             data['fechaHasta'],
@@ -88,13 +92,16 @@ def ver_asientos():
 @app.route('/librodiario', methods=['GET', 'POST'])
 @login_required
 def libro_diario():
-    if request.method == 'GET':   
-        data = {'titulo':'Libro Diario'}
+    if request.method == 'GET':
+        data = {
+            'titulo':'Libro Diario',
+            'inicio': ModeloAsiento().inicioActividades(db)[0],
+            'hoy': datetime.date.today()
+        }
         return render_template('libros/libro_diario.html', data=data)
     else:
         data = request.get_json()
-        MT = ModeloTransacciones()
-        transacciones = MT.listarTransacciones(
+        transacciones = ModeloTransacciones().listarTransacciones(
             db,
             data['fechaDesde'],
             data['fechaHasta'])
@@ -103,13 +110,16 @@ def libro_diario():
 @app.route('/libromayor', methods=['GET', 'POST'])
 @login_required
 def libro_mayor():
-    if request.method == 'GET':   
-        data = {'titulo':'Libro Mayor'}
+    if request.method == 'GET':
+        data = {
+            'titulo':'Libro Mayor',
+            'inicio': ModeloAsiento().inicioActividades(db)[0],
+            'hoy': datetime.date.today()
+        }
         return render_template('libros/libro_mayor.html', data=data)
     else:
         data = request.get_json()
-        MT = ModeloTransacciones()
-        transacciones = MT.listarTransaccionesCuenta(
+        transacciones = ModeloTransacciones().listarTransaccionesCuenta(
             db,
             data['cuenta'],
             data['fechaDesde'],
