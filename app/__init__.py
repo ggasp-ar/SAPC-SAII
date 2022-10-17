@@ -7,6 +7,7 @@ from app.models.ModeloAsiento import ModeloAsiento
 
 from app.models.ModeloCuenta import ModeloCuenta
 from app.models.ModeloTipoCuenta import ModeloTipoCuenta
+from app.models.ModeloTransacciones import ModeloTransacciones
 from app.models.entities.Cuenta import Cuenta
 
 from .models.ModeloUsuario import ModeloUsuario
@@ -83,7 +84,23 @@ def ver_asientos():
             })
         return jsonify(arrasientos)
 
-    
+ 
+@app.route('/librodiario', methods=['GET', 'POST'])
+@login_required
+def libro_diario():
+    if request.method == 'GET':   
+        data = {'titulo':'Libro Diario'}
+        return render_template('libros/libro_diario.html', data=data)
+    else:
+        data = request.get_json()
+        MT = ModeloTransacciones()
+        transacciones = MT.listarTransacciones(
+            db,
+            data['fechaDesde'],
+            data['fechaHasta'],
+            True)
+        return jsonify(transacciones)
+
 @app.route('/verasiento')
 @login_required
 def ver_asiento():

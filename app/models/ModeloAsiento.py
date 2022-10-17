@@ -62,6 +62,7 @@ class ModeloAsiento():
         cuentas_usadas[cid] = cuenta
       return asiento,cuentas_usadas
 
+    @classmethod
     def nextAsientoId(self,db):
       try:
         id = fetchOne(db, 'SELECT COUNT(asiento_id) AS C FROM asientos')['C']
