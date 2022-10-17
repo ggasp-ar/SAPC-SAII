@@ -73,15 +73,15 @@ def ver_asientos():
             db,
             data['fechaDesde'],
             data['fechaHasta'],
-            "ASC")
-        asientosdict = {}
+            True)
+        arrasientos = []
         for a in asientos:
-            asientosdict[a.getId()] = {
+            arrasientos.append({
                 'id': a.getId(),
                 'descripcion': a.getDesc(),
                 'fecha': a.getFecha()
-            }
-        return jsonify(asientosdict)
+            })
+        return jsonify(arrasientos)
 
     
 @app.route('/verasiento')

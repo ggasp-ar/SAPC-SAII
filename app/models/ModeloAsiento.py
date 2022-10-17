@@ -64,7 +64,7 @@ class ModeloAsiento():
 
     def nextAsientoId(self,db):
       try:
-        id = fetchOne(db, 'SELECT MAX(asiento_id) id FROM asientos')['id']
+        id = fetchOne(db, 'SELECT COUNT(asiento_id) AS C FROM asientos')['C']
         return (id + 1)
       except:
         return (0)
@@ -105,11 +105,13 @@ class ModeloAsiento():
             raise Exception(ex)
     
     @classmethod
-    def listarAsientos(self, db, desde, hasta, orden):
+    def listarAsientos(self, db, desde, hasta, ascendente):
         try:
+            orden = 'ASC' if ascendente else 'DESC'
             sql = """SELECT *
                     FROM ASIENTOS a
-                    WHERE a.fecha >= '{0}' AND a.fecha <= '{1} 23:59:59' """.format(desde, hasta) 
+                    WHERE a.fecha >= '{0}' AND a.fecha <= '{1} 23:59:59' 
+                    ORDER BY a.fecha {2}""".format(desde, hasta, orden) 
             data = fetchAll(db, sql)
             asientos = []
             if data != None:

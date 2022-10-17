@@ -53,9 +53,9 @@
     const table = $('#main-table')[0]
     $('#main-table tr').remove()
     let row = null
-    for (const [key, value] of Object.entries(data)) {
+    for (const elem of data) {
       row = table.insertRow(-1)
-      generarRow(row, key, value.descripcion, value.fecha)
+      generarRow(row, elem.id, elem.descripcion, elem.fecha)
     }
   }
 
