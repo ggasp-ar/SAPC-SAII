@@ -1,0 +1,40 @@
+{% extends './libros/vista_libro.html' %}
+
+{% block info %}
+<div class="row">
+  <div class="col">
+    <label for="cuenta">Elegir Cuenta</label>
+    <div class="input-group">
+      <select name="cuenta" class="form-control col-sm-4" id="cuenta"></select> 
+    </div>
+  </div>
+</div>
+<div class="row">  
+  <div class="col">
+    <button type="button" class="btn btn-primary form-control " id="realizarbusqueda" name="finalizar">Generar</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block tabla %}
+  <div class="col">
+    <h1 style="text-align:center; display: none;" id="vacioText"> Vacio </h1>
+  </div>
+  <thead>
+    <tr>
+        <th>Fecha</th>
+        <th class="w-25" style="text-align:left;">Descripcion</th>
+        <th>Debe</th>
+        <th>Haber</th>
+        <th>Saldo Parcial</th>
+        <th>Asiento</th>
+    </tr>
+  </thead>
+  <tbody id="main-table"></tbody>
+{% endblock %}
+
+{% block customJS %}
+<script src="{{ url_for('static', filename='lib/sweetalert2-9.10.0/sweetalert2.all.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/notificacionSwal.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libros/libro_mayor.js') }}"></script>
+{% endblock %}

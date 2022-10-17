@@ -97,8 +97,23 @@ def libro_diario():
         transacciones = MT.listarTransacciones(
             db,
             data['fechaDesde'],
-            data['fechaHasta'],
-            True)
+            data['fechaHasta'])
+        return jsonify(transacciones)
+
+@app.route('/libromayor', methods=['GET', 'POST'])
+@login_required
+def libro_mayor():
+    if request.method == 'GET':   
+        data = {'titulo':'Libro Mayor'}
+        return render_template('libros/libro_mayor.html', data=data)
+    else:
+        data = request.get_json()
+        MT = ModeloTransacciones()
+        transacciones = MT.listarTransaccionesCuenta(
+            db,
+            data['cuenta'],
+            data['fechaDesde'],
+            data['fechaHasta'])
         return jsonify(transacciones)
 
 @app.route('/verasiento')
