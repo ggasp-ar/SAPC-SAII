@@ -46,7 +46,7 @@
     }
 
     const selection = cuentaSelect.options[cuentaSelect.selectedIndex]
-    id = parseInt(selection.getAttribute('cid'))
+    const id = parseInt(selection.getAttribute('cid'))
     realizarBusqueda(id, dateDesde.value, dateHasta.value)
   })
 
