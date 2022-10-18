@@ -1,6 +1,6 @@
 {% extends './body.html' %}
 
-{% block title %}Index{% endblock %}
+{% block title %}SAPC{% endblock %}
 
 {% block customCSS %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
@@ -14,24 +14,26 @@
         <h2>¿Qué deseas hacer?</h2>
 
         <div class="row">
-            <ul class="nav-item">
-                <a href="/cuentas" class="btn btn-primary btn-lg btn-block">Ver cuentas</a>
-            </ul>
-            <ul class="nav-item">
-                <a href="/registrarasiento" class="btn btn-primary btn-lg btn-block">Registrar Asiento</a>
-            </ul>
-            <ul class="nav-item">
-                <a href="/verasientos" class="btn btn-primary btn-lg btn-block">Ver Asiento</a>
-            </ul>
-            <ul class="nav-item">
-                <a href="/librodiario" class="btn btn-primary btn-lg btn-block">Libro Diario</a>
-            </ul>
-            <ul class="nav-item">
-                <a href="/libromayor" class="btn btn-primary btn-lg btn-block">Libro Mayor</a>
-            </ul>
-            <ul class="nav-item">
-                <a href="https://docs.google.com/document/d/197nVxprMyvIef9-iOSohgQQ8-MfirnasiQhMMthMU9g/edit?usp=sharing" class="btn btn-primary btn-lg btn-block">Documentacion</a>
-            </ul>
+            <div class="col-sm-5" style="margin:0 auto;">
+                <ul class="nav-item">
+                    <a href="/cuentas" class="btn btn-primary btn-lg btn-block">Ver cuentas</a>
+                </ul>
+                <ul class="nav-item">
+                    <a href="/registrarasiento" class="btn btn-primary btn-lg btn-block">Registrar Asiento</a>
+                </ul>
+                <ul class="nav-item">
+                    <a href="/verasientos" class="btn btn-primary btn-lg btn-block">Ver Asiento</a>
+                </ul>
+                <ul class="nav-item">
+                    <a href="/librodiario" class="btn btn-primary btn-lg btn-block">Libro Diario</a>
+                </ul>
+                <ul class="nav-item">
+                    <a href="/libromayor" class="btn btn-primary btn-lg btn-block">Libro Mayor</a>
+                </ul>
+                <ul class="nav-item">
+                    <a href="https://docs.google.com/document/d/197nVxprMyvIef9-iOSohgQQ8-MfirnasiQhMMthMU9g/edit?usp=sharing" class="btn btn-primary btn-lg btn-block">Documentacion</a>
+                </ul>
+            </div>
         </div>
     </div>
 {% endblock %}
