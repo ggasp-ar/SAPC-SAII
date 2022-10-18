@@ -13,7 +13,9 @@ INSERT INTO roles VALUES (0,'Admin'),(1,'Usuario');
 INSERT INTO roles_tareas VALUES
 (0,01),(0,02),
 (0,11),(0,12),(0,13),
-(0,21),(0,22),(0,23);
+(0,21),(0,22),(0,23),
+(1,11),(1,12),
+(1,21),(1,22);
 
 INSERT INTO usuarios(usuario,nombre,contrasenia,rol_id,habilitada) VALUE ('Admin',
 'Marcos Suckerberg',

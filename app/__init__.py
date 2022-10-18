@@ -47,7 +47,9 @@ def login():
             flash(LOGIN_CREDENCIALESINVALIDAS,'warning')
             return render_template('auth/login.html')
     else:
-        return render_template('auth/login.html')
+        if not(current_user.is_authenticated):
+            return render_template('auth/login.html')
+        return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
@@ -132,8 +134,6 @@ def ver_asiento():
     args = request.args
     MA = ModeloAsiento()
     MU = ModeloUsuario()
-    if not(current_user.is_authenticated):
-        return redirect(url_for('login'))
     try:
         asiento = MA.obtenerAsiento(db, args.get("asiento_id"))
         fecha = asiento.getFecha().replace(' ', 'T').rsplit(':',1)[0]
@@ -243,13 +243,14 @@ def registrar_cuenta():
         return jsonify({'exito':False,'mensaje':('Fallo la creacion de la nueva cuenta: ' + str(e))})
 
 @app.route('/crearusuario', methods=['GET', 'POST'])
+@login_required
 def crearusuario():
     if request.method == 'POST':
-        nuevoUsuario = (request.form['usuario'],request.form['password'],request.form['passwordTwo'])
+        nuevoUsuario = (request.form['nuevoUsuario'],request.form['nuevoNombre'],request.form['nuevoPassword'],request.form['nuevoPasswordTwo'])
         usuario_creado = ModeloUsuario.crear_usuario(db, nuevoUsuario)
         if usuario_creado != None:
             flash('Usuario creado correctamente', 'success')
-            return redirect(url_for('login'))
+            return redirect(url_for('index'))
         else:
             flash('Las Contraseñas no coinciden', 'warning')
             return render_template('auth/crearusuario.html')

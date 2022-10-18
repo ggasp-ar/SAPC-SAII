@@ -20,14 +20,22 @@
             <div id="inforow" style="visibility: hidden;">
                 <div class="row">
                     <div class="input-group col-sm">
-                        <span class="input-group-text" id="inputGroupPrepend">$</span>
+                        <span class="form-control input-group-text col-sm-2" id="inputGroupPrepend">$</span>
                         <input placeholder="Saldo" class="form-control" type="numeric" id="saldo-cuenta" name="saldo-cuenta" disabled>
                     </div>
                     <div id="tipo-cuenta" class="col-sm"></div>
                 </div>
+                
+                {% if 'Administrar Cuentas' in current_user.tareas %}
                 <div class="row" style="padding-top: 20px">
                     <button class="form-control" id="addaccmenu" text="asd" disabled>Agregar Cuenta Hijo</button>
                 </div>
+                {% else %}
+                <div class="row" style="padding-top: 20px">
+                    <button class="form-control" id="addaccmenu" text="asd" hidden></button>
+                </div>
+                {% endif %}
+        
                 <br>
                 <div id="addaccform" class="form-border" >
                     <form id="accform" class="form-signin  m-auto">

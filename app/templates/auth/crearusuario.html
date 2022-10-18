@@ -7,27 +7,34 @@
 {% endblock %}
 
 {% block body %}
-<form class="form-signin w-100 m-auto" action="/crearusuario" method="post">
+<form class="form-signin w-100 m-auto" id="regform" action="/crearusuario" method="post">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <img class="mb-4" src="{{ url_for('static', filename='img/flask.svg') }}" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Crear Nuevo Usuario</h1>
 
     <div class="form-floating">
-        <label for="Usuario">Nombre Usuario</label>
-        <input type="text" class="form-control" id="Usuario" name="usuario" placeholder="Usuario" minlength="6" 
+        <label for="nuevoUsuario">Usuario</label>
+        <input type="text" class="form-control" id="nuevoUsuario" name="nuevoUsuario" placeholder="Usuario" minlength="6" 
         maxlength="20"
         required autofocus>
     </div>
     <br />
     <div class="form-floating">
-        <label for="floatingPassword">Contraseña</label>
-        <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" minlength="6"
+        <label for="nuevoNombre">Nombre Completo</label>
+        <input type="text" class="form-control" id="nuevoNombre" name="nuevoNombre" [ngValue]="null" placeholder="Nombre" minlength="10" 
+        maxlength="30"
+        required>
+    </div>
+    <br />
+    <div class="form-floating">
+        <label for="nuevoPassword">Contraseña</label>
+        <input type="password" class="form-control" id="nuevoPassword" name="nuevoPassword" placeholder="Contraseña" minlength="6"
         maxlength="20"
         required>
     </div>
     <div class="form-floating">
-        <label for="floatingPassword">Repita su Contraseña</label>
-        <input type="password" class="form-control" id="passwordTwo" name="passwordTwo" placeholder="Contraseña" minlength="6"
+        <label for="nuevoPasswordTwo">Repita su Contraseña</label>
+        <input type="password" class="form-control" id="nuevoPasswordTwo" name="nuevoPasswordTwo" placeholder="Repetir Contraseña" minlength="6"
         maxlength="20"
         required>
     </div>

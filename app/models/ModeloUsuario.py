@@ -1,7 +1,7 @@
 from flask import Flask, flash, render_template
 from .entities.Usuario import Usuario
 from .entities.TipoUsuario import TipoUsuario
-from ..utils import fetchOne
+from ..utils import fetchAll, fetchOne
 class ModeloUsuario():
 
     @classmethod
@@ -20,7 +20,7 @@ class ModeloUsuario():
 
     @classmethod
     def crear_usuario(self,db,nuevoUsuario):
-        if nuevoUsuario[1] != nuevoUsuario[2]:
+        if nuevoUsuario[2] != nuevoUsuario[3]:
             return None
         try:
             usuario = Usuario(None, nuevoUsuario[0], nuevoUsuario[0],0,Usuario.crear_password(nuevoUsuario[1]))
@@ -31,9 +31,9 @@ class ModeloUsuario():
                                             `contrasenia`,
                                             `rol_id`,
                                             `habilitada`) 
-                                    VALUES ('{usuario.usuario}',
-                                            '{usuario.usuario}',
-                                            '{usuario.password}',
+                                    VALUES ('{nuevoUsuario[0]}',
+                                            '{nuevoUsuario[1]}',
+                                            '{Usuario.crear_password(nuevoUsuario[2])}',
                                             1,
                                             1);""" # Rol ID 1 es usuario, 0 es Admin en este caso, cuidado
                                             # y habria que ver si no dejar el habilitado en 0, 
@@ -52,12 +52,21 @@ class ModeloUsuario():
                     FROM usuarios USU JOIN roles TIP ON USU.rol_id = TIP.rol_id
                     WHERE USU.usuario_id = {0} """.format(id)      
             data = fetchOne(db,sql)
+            sqltareas = """SELECT tarea
+                    FROM (roles r INNER JOIN roles_tareas rt ON (r.rol_id = rt.rol_id)) INNER JOIN tareas t ON (rt.tarea_id = t.tarea_id)
+                    WHERE r.rol_id = {0} """.format(data["rol_id"])
+            tareas = fetchAll(db, sqltareas)
+            arrayTareas = []
+            for t in tareas:
+                arrayTareas.append(t['tarea'])
             #tipousuario = TipoUsuario(data[2],data[3])
             usuario_logeado = Usuario(id=data["usuario_id"],
                                     usuario=data["usuario"],
                                     nombre=data["nombre"],
                                     rol=data["rol_id"],
-                                    password=None)
+                                    password=None,
+                                    tareas=arrayTareas
+                                    )
             return usuario_logeado
         except Exception as ex:
             print(ex)

@@ -23,6 +23,11 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('libro_mayor') }}">Libro Mayor</a>
         </li>
+        {% if 'Administrar Usuarios' in current_user.tareas %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('crearusuario') }}"> Registrar nuevo Usuario</a>
+        </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('logout') }}">Cerrar Sesi&oacute;n</a>
         </li>
