@@ -92,7 +92,8 @@ class ModeloAsiento():
                     WHERE a.asiento_id = {0} """.format(id) 
             sql_ac = """SELECT *
                     FROM asientos_cuentas a INNER JOIN cuentas c ON (a.cuenta_id = c.cuenta_id)
-                    WHERE a.asiento_id = {0} """.format(id)        
+                    WHERE a.asiento_id = {0} 
+                    ORDER BY a.orden""".format(id)        
             data = fetchOne(db, sql)
             data_tr = fetchAll(db, sql_ac)
             if data != None:

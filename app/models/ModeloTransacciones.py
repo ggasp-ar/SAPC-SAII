@@ -45,7 +45,7 @@ class ModeloTransacciones():
             sql = """SELECT fecha, a.asiento_id, c.cuenta, ac.valor, ac.haber
                     FROM (asientos a INNER JOIN asientos_cuentas ac ON (a.asiento_id = ac.asiento_id)) INNER JOIN cuentas c ON (ac.cuenta_id = c.cuenta_id)
                     WHERE a.fecha >= '{0}' AND a.fecha <= '{1} 23:59:59' 
-                    ORDER BY a.fecha {2}""".format(desde, hasta, orden) 
+                    ORDER BY a.fecha {2}, ac.orden""".format(desde, hasta, orden) 
             data = fetchAll(db, sql)
             transacciones = {}
             if data != None:
