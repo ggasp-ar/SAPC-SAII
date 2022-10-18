@@ -1,6 +1,6 @@
 
 
-from datetime import date
+import datetime
 from xml.etree.ElementTree import tostring
 from app.models.entities.Asiento import Asiento
 from app.models.entities.Cuenta import Cuenta
@@ -135,10 +135,10 @@ class ModeloAsiento():
     def inicioActividades(self, db):
       try:
         sql = """SELECT MIN(fecha) fecha FROM asientos"""
-        data = fetchOne(db, sql)
+        data = fetchOne(db, sql)['fecha']
         if data == None:
-          return ''
-        fecha = data['fecha'].isoformat(sep='T',timespec='auto')
+          return [datetime.date.today()]
+        fecha = data.isoformat(sep='T',timespec='auto')
         return fecha.split('T')
       except Exception as ex:
           raise Exception(ex)
