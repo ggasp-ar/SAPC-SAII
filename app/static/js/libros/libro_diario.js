@@ -5,6 +5,7 @@
   const tabla = document.querySelector('table[id="tabla-asientos"]')
   const btnRealizarBusqueda = document.querySelector('button[id="realizarbusqueda"]')
   const csrfToken = document.querySelector("[name='csrf_token']").value
+  const vacioText = document.querySelector('#vacioText')
 
   btnRealizarBusqueda.addEventListener('click', function () {
     if (dateDesde.value === '' | dateHasta.value === '') {
@@ -41,8 +42,15 @@
       }
       return response.json()
     }).then(respData => {
-      cargarTransacciones(respData)
-      tabla.style.display = ''
+      console.log(respData)
+      if (JSON.stringify(respData) === JSON.stringify({})) {
+        tabla.style.display = 'None'
+        vacioText.style.display = 'block'
+      } else {
+        cargarTransacciones(respData)
+        tabla.style.display = ''
+        vacioText.style.display = 'None'
+      }
       return respData
     }).catch(error => {
       notificacionSwal('¡Error!', error, 'error', 'Cerrar')
