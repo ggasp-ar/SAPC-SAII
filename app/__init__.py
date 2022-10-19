@@ -225,9 +225,7 @@ def registrar_cuenta():
         if codigo%1000 == 0:
             print("padre")
             for i in range(100,9900,100):
-                print(codigo+i)
                 padreDeCuentaCreada = ModeloCuenta().obtenerPor(db, 'codigo', codigo+i, False)
-                print(padreDeCuentaCreada)
                 if padreDeCuentaCreada == {}:
                     nuevaCuenta.setCodigo(codigo+i)
                     break
@@ -235,16 +233,13 @@ def registrar_cuenta():
             if codigo%100 == 0:
                 print("hijo")
                 for i in range(1,99):
-                    print(codigo+i)
                     padreDeCuentaCreada = ModeloCuenta().obtenerPor(db, 'codigo', codigo+i, False)
-                    print(padreDeCuentaCreada)
                     if padreDeCuentaCreada == {}:
                         nuevaCuenta.setCodigo(codigo+i)
                         break
             else:
                 print("nieto")
         debugPrint(nuevaCuenta, "nueva cuenta creada")
-        print(nuevaCuenta)
         MC.cargarNuevaCuenta(db, nuevaCuenta)
         return jsonify({'exito':True,'mensaje':'Cuenta Creada'})
     except Exception as e:

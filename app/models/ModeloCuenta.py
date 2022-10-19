@@ -1,3 +1,4 @@
+from threading import ExceptHookArgs
 from app.models.ModeloTipoCuenta import ModeloTipoCuenta
 from .entities.Cuenta import Cuenta
 from .entities.TipoCuenta import TipoCuenta
@@ -150,25 +151,31 @@ class ModeloCuenta():
         return True
     
     @classmethod
-    def verificarCuenta(self,cuenta):
-        #cuenta.getNombre()
-        return True
+    def verificarCuenta(self,db,cuenta):
+        nombre = cuenta.getNombre()
+        if len(nombre.replace(' ','')) <1:
+            raise Exception('Revise el nombre de la cuenta y vuelva a intentarlo')
+        
+        matches = fetchAll(db,"""SELECT * FROM cuentas WHERE cuenta = '{0}'""".format(nombre))
+        if len(matches) > 0:
+            raise Exception('Ya existe una cuenta con este nombre')
+
+        
 
     @classmethod
     def cargarNuevaCuenta(self, db, cuenta):
-        if(self.verificarCuenta(cuenta)):
-            cursor = db.connection.cursor()
-            pid = cuenta.getPadreId()
-            padre = self.obtenerPor(db, 'cuenta_id', pid, False)[pid]
-            print(padre)
-            cursor.execute("INSERT INTO cuentas (cuenta, cuenta_padre_id, codigo, tipo_id, recibe_saldo, habilitada) VALUES (%s, %s, %s, %s, %s, %s)",
-            (cuenta.getNombre(),
-            padre.getCodigo(),
-            cuenta.getCodigo(),
-            padre.getTipo().getTipoId(),
-            cuenta.getRecibe(),
-            cuenta.getHabilitada()))
-            db.connection.commit()
+        self.verificarCuenta(db,cuenta)
+        cursor = db.connection.cursor()
+        pid = cuenta.getPadreId()
+        padre = self.obtenerPor(db, 'cuenta_id', pid, False)[pid]
+        cursor.execute("INSERT INTO cuentas (cuenta, cuenta_padre_id, codigo, tipo_id, recibe_saldo, habilitada) VALUES (%s, %s, %s, %s, %s, %s)",
+        (cuenta.getNombre(),
+        padre.getCodigo(),
+        cuenta.getCodigo(),
+        padre.getTipo().getTipoId(),
+        cuenta.getRecibe(),
+        cuenta.getHabilitada()))
+        db.connection.commit()
 
     @classmethod
     def togglearCuenta(self, db, cid, modo):
