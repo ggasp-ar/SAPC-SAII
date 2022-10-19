@@ -96,10 +96,17 @@
     const table = $('#main-table')[0]
     $('#main-table tr').remove()
     let row = null
-    console.log(data)
+    const len = Object.keys(data).length
+    let i = 1
     for (const [key, value] of Object.entries(data)) {
       row = table.insertRow(-1)
       generarRow(row, key, value.Desc, value.Valor, value.Haber, value.SaldoParcial, value.Asiento, true)
+      if (i === len) {
+        row = table.insertRow(-1)
+        row.className = 'remarcado'
+        generarRow(row, key, 'Saldo a la fecha', '-', false, value.SaldoParcial, '-')
+      }
+      i++
     }
   }
 
@@ -113,11 +120,17 @@
     if (haber) {
       cell2.style.paddingLeft = '3em'
     }
-    // Cell 3
-    row.insertCell(2).innerHTML = ((haber) ? '-' : '$ ' + valor)
-    // Cell 4
-    row.insertCell(3).innerHTML = ((haber) ? '$ ' + valor : '-')
-    // Cell 4
+    if (valor === '-') {
+      row.insertCell(2).innerHTML = valor
+      row.insertCell(3).innerHTML = valor
+    } else {
+      // Cell 3
+      row.insertCell(2).innerHTML = ((haber) ? '-' : '$ ' + valor)
+      // Cell 4
+      row.insertCell(3).innerHTML = ((haber) ? '$ ' + valor : '-')
+    }
+
+    // Cell 5
     row.insertCell(4).innerHTML = saldo
     // Cell 6
     if (btn) {

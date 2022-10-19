@@ -91,7 +91,9 @@ class ModeloCuenta():
             for h in hijos:
                 d['nodes'].append(self.cuentaToDict(h))
         if d['recibe']:
-            d['backColor'] = " #EEEEEE"
+            d['backColor'] = "#EEEEEE"
+            if not(d['habilitada']):
+                d['backColor'] = "#fbdcdc"
         else:
             d['backColor'] = " #FFFFFF"
         return d

@@ -6,7 +6,11 @@ body{
 .form-check-input {
   margin-top: 12px;
 }
-  
+
+.remarcado{
+  background-color:  #d7dcfa !important;
+}
+
 table {
     table-layout:fixed;
     width:100%;
