@@ -18,6 +18,14 @@
             <h1 id="codigo-cuenta"></h1>
             <h1 id="nombre-cuenta">Seleccione una Cuenta</h1>
             <div id="inforow" style="visibility: hidden;">
+                {% if 'Administrar Cuentas' in current_user.tareas %}
+                <div class="row" style="padding-top: 20px">
+                    <button class="form-control col-sm-3" style="margin: auto;"id="mngAccBtn" text="asd">Habilitar</button>
+                </div>
+                {% else %}
+                <button id="mngAccBtn" hidden></button>
+                {% endif %}
+                <br>
                 <div class="row">
                     <div class="input-group col-sm">
                         <span class="form-control input-group-text col-sm-2" id="inputGroupPrepend">$</span>
@@ -31,15 +39,13 @@
                     <button class="form-control" id="addaccmenu" text="asd" disabled>Agregar Cuenta Hijo</button>
                 </div>
                 {% else %}
-                <div class="row" style="padding-top: 20px">
-                    <button class="form-control" id="addaccmenu" text="asd" hidden></button>
-                </div>
+                <button id="addaccmenu" hidden></button>
                 {% endif %}
         
                 <br>
                 <div id="addaccform" class="form-border" >
                     <form id="accform" class="form-signin  m-auto">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}">
                         <div class="row" style="padding-inline: 30px; padding-top: 10px;">
                             <label for="Cuenta">Nombre</label>
                             <input type="text" class="form-control" id="Cuenta" name="Cuenta" placeholder="Cuenta" required autofocus>

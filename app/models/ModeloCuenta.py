@@ -20,11 +20,12 @@ class ModeloCuenta():
                     recibe = bool(data["recibe_saldo"]),
                     saldo = data["saldo_actual"],
                     tipo = self.Tipos[data["tipo_id"]],
-                    padreid = data["cuenta_padre_id"])
+                    padreid = data["cuenta_padre_id"],
+                    habilitada = bool(data["habilitada"]))
         return acc
     
     @classmethod
-    def obtenerPor(self,db,campo,valor, byCodigo):
+    def obtenerPor(self,db,campo,valor, byCodigo, habilitadas = False):
         self.cargarTipos(db)
         try:
             sql = """SELECT *
@@ -34,6 +35,8 @@ class ModeloCuenta():
             if data != None:
                 cuentas={}
                 for c in data:
+                    if(habilitadas and not(bool(c["habilitada"]))):
+                        continue
                     cuenta = self.generarCuenta(c)
                     index = (cuenta.getCodigo() if byCodigo else cuenta.getId())
                     cuentas[index] = cuenta 
@@ -79,6 +82,7 @@ class ModeloCuenta():
             'tipo':cta.getTipo().toDict(),
             'recibe':cta.getRecibe(),
             'text':cta.getNombre(),
+            'habilitada':cta.getHabilitada(),
             'tags':[(' ({})'.format(cta.getTipo().getTipo()))]
         }
         hijos=cta.getHijos()
@@ -100,6 +104,7 @@ class ModeloCuenta():
             'saldo':cta.getSaldo(),
             'tipo':cta.getTipo().toDict(),
             'text':cta.getNombre(),
+            'habilitada':cta.getHabilitada(),
             'tags':[(' ({})'.format(cta.getTipo().getTipo()))]
         }
         return d
@@ -113,8 +118,8 @@ class ModeloCuenta():
         return tree
 
     @classmethod
-    def obtenerCuentasSaldo(self,db, byCodigo=True):
-        acc = self.obtenerPor(db, "recibe_saldo","1", byCodigo)
+    def obtenerCuentasSaldo(self, db, byCodigo=True, habilitadas = False):
+        acc = self.obtenerPor(db, "recibe_saldo","1", byCodigo, habilitadas)
         return acc
         
     @classmethod
@@ -154,14 +159,20 @@ class ModeloCuenta():
             pid = cuenta.getPadreId()
             padre = self.obtenerPor(db, 'cuenta_id', pid, False)[pid]
             print(padre)
-            cursor.execute("INSERT INTO cuentas (cuenta, cuenta_padre_id, codigo, tipo_id, recibe_saldo) VALUES (%s, %s, %s, %s, %s)",
+            cursor.execute("INSERT INTO cuentas (cuenta, cuenta_padre_id, codigo, tipo_id, recibe_saldo, habilitada) VALUES (%s, %s, %s, %s, %s, %s)",
             (cuenta.getNombre(),
             padre.getCodigo(),
             cuenta.getCodigo(),
             padre.getTipo().getTipoId(),
-            cuenta.getRecibe()))
+            cuenta.getRecibe(),
+            cuenta.getHabilitada()))
             db.connection.commit()
 
-
-
+    @classmethod
+    def togglearCuenta(self, db, cid, modo):
+        cursor = db.connection.cursor()
+        modov = int( modo == 'Habilitar' )
+        cursor.execute("""UPDATE CUENTAS SET habilitada = {0} WHERE cuenta_id = {1}""".format(modov,cid))
+        db.connection.commit()
+        return
 

@@ -190,7 +190,7 @@ def registrar_asiento():
 def ver_cuentas():
     mc=ModeloCuenta()
     if request.method == 'POST':
-        cuentas = mc.obtenerCuentasSaldo(db)
+        cuentas = mc.obtenerCuentasSaldo(db,habilitadas=True)
         dict_cuentas = mc.obtenerDict(cuentas,True)
         return jsonify(dict_cuentas)
     else:
@@ -203,13 +203,21 @@ def registrar_cuenta():
     MTC = ModeloTipoCuenta()
     try:
         data = request.get_json()
+        if (data['accion'] != 'Agregar Cuenta'):
+            try:
+                MC.togglearCuenta(db, data['cid'], data['accion'])
+                return jsonify({'exito':True,'mensaje':'Cuenta Modificada'})
+            except Exception as e:
+                return jsonify({'exito':False,'mensaje':('Fallo la modificacion: ' + str(e))})
+        
         nuevaCuenta = Cuenta(id= None,
                             codigo= None,
                             nombre= data['cuenta'],
                             saldo= 0,
                             tipo= MTC.obtenerTipo(db,data['tipo']),
                             recibe= data['recibe'],
-                            padreid= data['padre_cid']
+                            padreid= data['padre_cid'],
+                            habilitada= False
                             )
         padreDeCuentaCreada = ModeloCuenta().obtenerPor(db, 'cuenta_id', nuevaCuenta.getPadreId(), False)
         padreDeCuentaCreada = padreDeCuentaCreada[nuevaCuenta.getPadreId()]

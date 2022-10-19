@@ -9,19 +9,25 @@
           <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('ver_cuentas') }}">Ver Cuentas</a>
+          <a class="nav-link" href="{{ url_for('ver_cuentas') }}">Cuentas</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('ver_asientos') }}">Ver Asientos</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarAsientosdw" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Asientos
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="{{ url_for('ver_asientos') }}">Ver Asientos</a>
+            <a class="dropdown-item" href="{{ url_for('registrar_asiento') }}">Registrar Asiento</a>
+          </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('registrar_asiento') }}">Registrar Asiento</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('libro_diario') }}">Libro Diario</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('libro_mayor') }}">Libro Mayor</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarAsientosdw" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Libros
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="{{ url_for('libro_diario') }}">Libro Diario</a>
+            <a class="dropdown-item" href="{{ url_for('libro_mayor') }}">Libro Mayor</a>
+          </div>
         </li>
         {% if 'Administrar Usuarios' in current_user.tareas %}
         <li class="nav-item">

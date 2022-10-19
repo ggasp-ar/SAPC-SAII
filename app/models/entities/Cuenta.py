@@ -1,7 +1,7 @@
 
 class Cuenta():
 
-    def __init__(self, id, codigo, nombre, saldo, tipo, recibe, padreid):
+    def __init__(self, id, codigo, nombre, saldo, tipo, recibe, padreid, habilitada):
         self.id = id #Cuenta ID
         self.codigo = codigo
         self.nombre = nombre #Nombre de cuenta
@@ -11,6 +11,7 @@ class Cuenta():
         self.padreid = padreid
         self.padre = None
         self.hijos = []
+        self.habilitada = habilitada
 
     def agregarHijo(self, cuenta):
         self.hijos.append(cuenta)
@@ -39,6 +40,9 @@ class Cuenta():
     def setCodigo(self, codigo):
         self.codigo = codigo
     
+    def getHabilitada(self):
+        return self.habilitada
+
     def getSaldo(self):
         saldo = 0
         if( self.hijos != []):
