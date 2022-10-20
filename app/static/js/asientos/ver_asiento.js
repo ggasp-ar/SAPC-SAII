@@ -3,7 +3,7 @@
   document.querySelector('input[id="datePicker"]').disabled = true
 
   const btnFinalizarAsiento = document.querySelector('button[id="finalizar"]')
-  btnFinalizarAsiento.innerHTML = 'Volver Atras'
+  btnFinalizarAsiento.innerHTML = 'Volver al inicio'
   btnFinalizarAsiento.style.display = 'block'
 
   btnFinalizarAsiento.addEventListener('click', function () {

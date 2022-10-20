@@ -1,29 +1,28 @@
-{% extends './base.html' %}
+{% extends './body.html' %}
 
 {% block title %} Crear Nuevo Usuario {% endblock %}
 
 {% block customCSS %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/newuser.css') }}">
 {% endblock %}
 
-{% block body %}
+{% block container %}
 <form class="form-signin w-100 m-auto" id="regform" action="/crearusuario" method="post">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <img class="mb-4" src="{{ url_for('static', filename='img/flask.svg') }}" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Crear Nuevo Usuario</h1>
 
-    <div class="form-floating">
-        <label for="nuevoUsuario">Usuario</label>
-        <input type="text" class="form-control" id="nuevoUsuario" name="nuevoUsuario" placeholder="Usuario" minlength="6" 
-        maxlength="20"
-        required autofocus>
-    </div>
-    <br />
     <div class="form-floating">
         <label for="nuevoNombre">Nombre Completo</label>
         <input type="text" class="form-control" id="nuevoNombre" name="nuevoNombre" [ngValue]="null" placeholder="Nombre" minlength="10" 
         maxlength="30"
         required>
+    </div>
+    <br />
+    <div class="form-floating">
+        <label for="nuevoUsuario">Usuario</label>
+        <input type="text" class="form-control" id="nuevoUsuario" name="nuevoUsuario" placeholder="Usuario" minlength="6" 
+        maxlength="20"
+        required autofocus>
     </div>
     <br />
     <div class="form-floating">
